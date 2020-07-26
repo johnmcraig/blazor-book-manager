@@ -11,4 +11,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookStore.Infrastructure\BookStore.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
