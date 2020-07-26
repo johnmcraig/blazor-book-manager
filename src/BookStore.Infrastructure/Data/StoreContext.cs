@@ -1,12 +1,10 @@
-﻿using BooStore.Core.Entities;
+﻿using BookStore.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace BookStore.Infrastructure.Data
 {
@@ -57,8 +55,8 @@ namespace BookStore.Infrastructure.Data
         {
             // optionsBuilder.UseNpgsql(_config.GetConnectionString("NpgsqlConString"))
             // optionsBuilder.UseSqlServer(_config.GetConnectionString("sqlConString"));
-            // optionsBuilder.UseInMemoryDatabase(databaseName: "StackPosts");
-            //optionsBuilder.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+            // optionsBuilder.UseInMemoryDatabase(databaseName: "BookStore");
+            optionsBuilder.UseSqlite(_config.GetConnectionString("sqlite"));
         }
     }
 }

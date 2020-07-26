@@ -1,5 +1,5 @@
 ﻿using BookStore.Infrastructure.Data;
-using BooStore.Core.Interfaces;
+using BookStore.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
