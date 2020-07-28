@@ -61,8 +61,7 @@ namespace BookStore.Infrastructure.Data
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
 
                 return false;
-            }
-            
+            }           
         }
 
         public async Task<IList<Author>> FindAll()
