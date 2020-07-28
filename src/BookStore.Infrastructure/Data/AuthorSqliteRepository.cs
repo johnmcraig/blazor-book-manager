@@ -43,6 +43,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return false;
             }  
         }
@@ -52,11 +53,13 @@ namespace BookStore.Infrastructure.Data
             try
             {
                 await _sqliteData.SaveData("DELETE FROM Authors WHERE Id = @Id", new { entity.Id }, connectionString);
+
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return false;
             }
             
@@ -73,6 +76,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return null;
             }
             
@@ -89,6 +93,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return null;
             }
             
@@ -107,6 +112,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return false;
             }    
         }
