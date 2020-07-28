@@ -27,6 +27,8 @@ namespace BookStore.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAuthors()
         {
+            var location = GetControllerActionNames();
+
             try
             {
                 _logger.LogInformation("Attempting to get all authors...");
@@ -39,7 +41,7 @@ namespace BookStore.Api.Controllers
             }
             catch (Exception ex)
             {
-                return InternalError($"{ex.Message} - {ex.InnerException}");
+                return InternalError($"{location}: {ex.Message} - {ex.InnerException}");
             }
             
         }
