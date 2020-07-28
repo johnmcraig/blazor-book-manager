@@ -4,20 +4,20 @@ using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BookStore.Api.Controllers
 {
     public class BookController : BaseApiController
     {
         private readonly IBookRepository _bookRepo;
-        private readonly ILogger<BookController> _logger;
+        private readonly ILoggerService _logger;
 
-        public BookController(IBookRepository bookRepo, ILogger<BookController> logger)
+        public BookController(IBookRepository bookRepo, ILoggerService logger)
         {
             _bookRepo = bookRepo;
             _logger = logger;
         }
+
         /// <summary>
         /// Get a list of all Books as a JSON response
         /// </summary>

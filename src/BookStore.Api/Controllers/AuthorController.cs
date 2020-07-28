@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BookStore.Api.Controllers
 {
     public class AuthorController : BaseApiController
     {
         private readonly IAuthorRepository _authorRepo;
-        private readonly ILogger _logger;
+        private readonly ILoggerService _logger;
 
-        public AuthorController(IAuthorRepository authorRepo, ILogger<AuthorController> logger)
+        public AuthorController(IAuthorRepository authorRepo, ILoggerService logger)
         {
             _authorRepo = authorRepo;
             _logger = logger;
@@ -26,6 +24,7 @@ namespace BookStore.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAuthors()
         {
             try
