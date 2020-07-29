@@ -55,7 +55,6 @@ namespace BookStore.Infrastructure.Data
         {
             // optionsBuilder.UseNpgsql(_config.GetConnectionString("NpgsqlConString"))
             // optionsBuilder.UseSqlServer(_config.GetConnectionString("sqlConString"));
-            // optionsBuilder.UseInMemoryDatabase(databaseName: "BookStore");
             optionsBuilder.UseSqlite(_config.GetConnectionString("sqlite"));
         }
     }
