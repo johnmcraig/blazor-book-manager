@@ -1,6 +1,9 @@
 ﻿using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using BookStore.Infrastructure.DataAccess;
+using Dapper;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,16 +18,19 @@ namespace BookStore.Infrastructure.Data
     {
         private readonly SqliteDataAccess _sqliteData;
         private readonly ILogger<AuthorSqliteRepository> _logger;
-        private readonly string connectionString = "sqlite";
+        private readonly string connectionString;
 
-        public AuthorSqliteRepository(SqliteDataAccess sqliteData, ILogger<AuthorSqliteRepository> logger)
+        public AuthorSqliteRepository(SqliteDataAccess sqliteData, ILogger<AuthorSqliteRepository> logger, IConfiguration config)
         {
             _sqliteData = sqliteData;
             _logger = logger;
+            connectionString = config["ConnectionStrings:sqilte"];
         }
 
         public async Task<bool> Create(Author entity)
         {
+            string sql = "INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
+            
             try
             {
                 var author = new
@@ -34,9 +40,7 @@ namespace BookStore.Infrastructure.Data
                     entity.Bio
                 };
 
-                await _sqliteData.SaveData(
-                    "INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);",
-                    author, connectionString);
+                await _sqliteData.SaveData(sql, author, connectionString);
 
                 return true;
             }
@@ -50,9 +54,11 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Delete(Author entity)
         {
+            string sql = "DELETE FROM Authors WHERE Id = @Id";
+
             try
             {
-                await _sqliteData.SaveData("DELETE FROM Authors WHERE Id = @Id", new { entity.Id }, connectionString);
+                await _sqliteData.SaveData(sql, new { entity.Id }, connectionString);
 
                 return true;
             }
@@ -66,9 +72,11 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
+            string sql = "SELECT * FROM Authors";
+
             try
             {
-                var authors = await _sqliteData.LoadData<Author, dynamic>("SELECT * FROM Authors", new { }, connectionString);
+                var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
 
                 return authors.ToList();
             }
@@ -83,9 +91,11 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
+            string sql = "SELECT * FROM Authors Where Id = @Id";
+
             try
             {
-                var author = await _sqliteData.LoadData<Author, dynamic>("SELECT * FROM People Where Id = @Id", new { Id = id }, connectionString);
+                var author = await _sqliteData.LoadData<Author, dynamic>(sql, new { Id = id }, connectionString);
 
                 return author.FirstOrDefault();
             }
@@ -95,16 +105,16 @@ namespace BookStore.Infrastructure.Data
 
                 return null;
             }
-            
         }
 
         public async Task<bool> Update(Author entity)
         {
+            string sql = "UPDATE Authors SET FirstName = @FirstName, LastName = @LastName, Bio = @Bio" +
+                " WHERE Id = @Id";
+
             try
             {
-                await _sqliteData.SaveData("UPDATE Authors SET FirstName = @FirstName," +
-                " LastName = @LastName, Bio = @Bio" +
-                " WHERE Id = @Id", entity, connectionString);
+                await _sqliteData.SaveData(sql, entity, connectionString);
 
                 return true;
             }
@@ -121,9 +131,29 @@ namespace BookStore.Infrastructure.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsExists(int id)
+        public async Task<bool> IsExists(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors " +
+                "WHERE Id = @Id)" + 
+                "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
+
+            try
+            {
+                using (var connection = new SqliteConnection(connectionString))
+                {
+                    connection.Open();
+
+                    var isExists = await connection.QueryFirstAsync<bool>(sql, new { Id = id });
+
+                    return isExists;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
+                return false;
+            }
         }
     }
 }
