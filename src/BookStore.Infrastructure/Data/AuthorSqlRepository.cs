@@ -14,17 +14,17 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class AuthorSqliteRepository : IAuthorRepository
+    public class AuthorSqlRepository : IAuthorRepository
     {
-        private readonly SqliteDataAccess _sqliteData;
-        private readonly ILogger<AuthorSqliteRepository> _logger;
-        private readonly string connectionString;
+        private readonly ISqlDataAccess _sqliteData;
+        private readonly ILogger<AuthorSqlRepository> _logger;
+        private readonly string connectionString = "sqlite";
 
-        public AuthorSqliteRepository(SqliteDataAccess sqliteData, ILogger<AuthorSqliteRepository> logger, IConfiguration config)
+        public AuthorSqlRepository(ISqlDataAccess sqliteData, ILogger<AuthorSqlRepository> logger, IConfiguration config)
         {
             _sqliteData = sqliteData;
             _logger = logger;
-            connectionString = config["ConnectionStrings:sqilte"];
+            //connectionString = config["ConnectionStrings:sqilte"];
         }
 
         public async Task<bool> Create(Author entity)

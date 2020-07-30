@@ -20,6 +20,14 @@ namespace BookStore.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure();
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", 
+                    builder =>
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
             services.AddSwaggerDocumentation();
             services.AddControllers();
         }
@@ -37,6 +45,8 @@ namespace BookStore.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
