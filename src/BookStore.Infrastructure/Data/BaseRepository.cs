@@ -2,40 +2,51 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Infrastructure.Data
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+        private readonly StoreContext _context;
 
-        public Task<IList<T>> FindAll()
+        public BaseRepository(StoreContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<T> FindById(int id)
+        public async Task<IList<T>> FindAll()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().ToListAsync();
         }
 
-        public Task<bool> Update(T entity)
+        public async Task<T> FindById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task<bool> Delete(T entity)
+        public async Task<bool> Update(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            return await SaveAll();
         }
 
-        public Task<bool> Create(T entity)
+        public async Task<bool> Delete(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
+            return await SaveAll();
         }
 
-        public Task<bool> SaveAll()
+        public async Task<bool> Create(T entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(entity);
+            return await SaveAll();
+        }
+
+        public async Task<bool> SaveAll()
+        {
+            return (await _context.SaveChangesAsync() > 0);
         }
     }
 }
