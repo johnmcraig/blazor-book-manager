@@ -3,7 +3,7 @@ obj/
 .vscode
 .vs
 *.user
+.idea/
 
-/src/BookStore.Api/BookShop.db
-/src/BookStore.Api/2020-07-29_logfile.txt
-/src/logs
+**.db
+**.txt
