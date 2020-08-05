@@ -30,7 +30,7 @@ namespace BookStore.Infrastructure.Data
         public async Task<bool> Create(Author entity)
         {
             string sql = "INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
-            
+
             try
             {
                 var author = new
@@ -49,7 +49,7 @@ namespace BookStore.Infrastructure.Data
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
 
                 return false;
-            }  
+            }
         }
 
         public async Task<bool> Delete(Author entity)
