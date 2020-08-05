@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using BookStore.UI.Wasm.Contracts;
+using BookStore.UI.Wasm.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +20,7 @@ namespace BookStore.UI.Wasm
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            builder.Services.AddTransient<IAuthorRepository, AuthorService>();
             await builder.Build().RunAsync();
         }
     }
