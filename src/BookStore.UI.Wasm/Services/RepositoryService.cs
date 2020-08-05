@@ -6,18 +6,19 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 
 namespace BookStore.UI.Wasm.Services
 {
     public class RepositoryService<T> : IRepositoryService<T> where T : class
     {
         private readonly HttpClient _client;
-        //private readonly ILocalStorageService _localStorage;
+        private readonly ILocalStorageService _localStorage;
 
-        public RepositoryService(HttpClient client)
+        public RepositoryService(HttpClient client, ILocalStorageService localStorage)
         {
             _client = client;
-            // , ILocalStorageService localStorage _localStorage = localStorage;
+            _localStorage = localStorage;
         }
 
         public async Task<T> Create(string url, T entity)
