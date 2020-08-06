@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Microsoft.Extensions.Logging;
 
 namespace BookStore.UI.Wasm.Services
 {
@@ -14,11 +15,13 @@ namespace BookStore.UI.Wasm.Services
     {
         private readonly HttpClient _client;
         private readonly ILocalStorageService _localStorage;
+        private readonly ILogger<RepositoryService<T>> _logger;
 
-        public RepositoryService(HttpClient client, ILocalStorageService localStorage)
+        public RepositoryService(HttpClient client, ILogger<RepositoryService<T>> logger)
         {
             _client = client;
-            _localStorage = localStorage;
+            _logger = logger;
+            //  ILocalStorageService localStorage_localStorage = localStorage;
         }
 
         public async Task<T> Create(string url, T entity)
@@ -48,9 +51,18 @@ namespace BookStore.UI.Wasm.Services
 
         public async Task<IList<T>> GetAll(string url)
         {
-            var response = await _client.GetFromJsonAsync<IList<T>>(url);
+            try
+            {
+                var response = await _client.GetFromJsonAsync<IList<T>>(url);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return null;
+            }
+            
         }
 
         public async Task<T> GetSingle(string url, int id)
