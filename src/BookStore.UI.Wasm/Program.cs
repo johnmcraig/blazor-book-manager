@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Blazored.LocalStorage;
+using Blazored.Toast;
 
 namespace BookStore.UI.Wasm
 {
@@ -20,6 +22,9 @@ namespace BookStore.UI.Wasm
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredToast();
+            builder.Services.AddTransient(typeof(IRepositoryService<>), typeof(RepositoryService<>));
             builder.Services.AddTransient<IAuthorRepository, AuthorService>();
             await builder.Build().RunAsync();
         }
