@@ -21,6 +21,12 @@ namespace BookStore.Infrastructure.Data
             return books;
         }
 
+        public async Task<IList<Book>> FindBookBySearch(string search)
+        {
+            var books = await _context.Books.ToListAsync();
+            return books;
+        }
+
         public async Task<Book> FindById(int id)
         {
             var book = await _context.Books.FindAsync(id);
