@@ -25,18 +25,32 @@ namespace BookStore.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetBooks()
+        public async Task<IActionResult> GetBooks(string search
         {
             var location = GetControllerActionNames();
+
             try
             {
-                _logger.LogInformation($"{location}: Attempted Call");
+                if (string.IsNullOrEmpty(search))
+                {
+                    _logger.LogInformation($"{location}: Attempting to retrieve a list of records...");
 
-                var books = await _bookRepo.FindAll();
+                    var books = await _bookRepo.FindAll();
 
-                _logger.LogInformation($"{location}: Successful");
+                    _logger.LogInformation($"{location}: Successfull returned a list of records");
 
-                return Ok(books);
+                    return Ok(books);
+                }
+                else
+                {
+                    _logger.LogInformation($"{location}: Attempting to get books with search parameter of: { search }");
+
+                    var searchAuthor = await _bookRepo.FindBookBySearch(search);
+
+                    _logger.LogInformation($"{location}: Successfully got books with search parameter of: { search }");
+
+                    return Ok(searchAuthor);
+                }
             }
             catch (Exception ex)
             {

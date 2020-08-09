@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class AuthorRepository : IAuthorRepository
+    public class AuthorRepository : IAuthorRepository, IEfCoreExtensions
     {
         private readonly StoreContext _context;
 

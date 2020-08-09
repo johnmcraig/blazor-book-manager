@@ -1,9 +1,6 @@
 ﻿using BookStore.Infrastructure.Data;
 using BookStore.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using BookStore.Infrastructure.DataAccess;
 
 namespace BookStore.Infrastructure
@@ -15,7 +12,7 @@ namespace BookStore.Infrastructure
             services.AddScoped<ISqlDataAccess, SqliteDataAccess>();
             services.AddDbContext<StoreContext>();
 
-            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookRepository, BookSqlRepository>();
             services.AddScoped<IAuthorRepository, AuthorSqlRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
