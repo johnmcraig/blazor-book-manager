@@ -23,6 +23,12 @@ namespace BookStore.Infrastructure.Data
             return authors;
         }
 
+        public async Task<IList<Author>> FindAuthorBySearch(string search)
+        {
+            var authors = await _context.Authors.ToListAsync();
+            return authors;
+        }
+
         public async Task<Author> FindById(int id)
         {
             var author = await _context.Authors.FindAsync(id);
