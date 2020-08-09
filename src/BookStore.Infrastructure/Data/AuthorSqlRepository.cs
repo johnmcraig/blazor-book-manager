@@ -91,15 +91,14 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAuthorBySearch(string search)
         {
-            string sql = "SELECT Id, FirstName, LastName, Bio FROM Authors WHERE FirstName LIKE '%' + @Search + '%'" +
-                "UNION" +
-                "SELECT Id, FirstName, LastName, Bio FROM Authors WHERE LastName LIKE '%' + @Search + '%'";
+            string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search " +
+                         "UNION SELECT * FROM Authors WHERE LastName LIKE @Search";
 
             try
             {
-                var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { Search = search}, connectionString);
+                var results = await _sqliteData.LoadData<Author, dynamic>(sql, new {Search = "%" + search + "%"}, connectionString);
 
-                return authors.ToList();
+                return results.ToList();
             }
             catch (Exception ex)
             {

@@ -25,19 +25,32 @@ namespace BookStore.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAuthors()
+        public async Task<IActionResult> GetAuthors(string search)
         {
             var location = GetControllerActionNames();
 
             try
             {
-                _logger.LogInformation("Attempting to get all authors...");
+                if (string.IsNullOrEmpty(search))
+                {
+                    _logger.LogInformation("Attempting to get all authors...");
 
-                var authors = await _authorRepo.FindAll();
+                    var authors = await _authorRepo.FindAll();
 
-                _logger.LogInformation("Successfully got all Authors");
+                    _logger.LogInformation("Successfully got all Authors");
 
-                return Ok(authors);
+                    return Ok(authors);
+                }
+                else
+                {
+                    _logger.LogInformation($"Attempting to get authors with search parameter of: { search }");
+
+                    var searchAuthor = await _authorRepo.FindAuthorBySearch(search);
+
+                    _logger.LogInformation($"Successfully got Authors with search parameter of: { search }");
+
+                    return Ok(searchAuthor);
+                }
             }
             catch (Exception ex)
             {
