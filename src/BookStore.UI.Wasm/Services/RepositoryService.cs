@@ -67,17 +67,29 @@ namespace BookStore.UI.Wasm.Services
 
         public async Task<T> GetSingle(string url, int id)
         {
-            var response = await _client.GetFromJsonAsync<T>(url + id);
+            try
+            {
+                var response = await _client.GetFromJsonAsync<T>(url + id);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return null;
+            } 
         }
 
         public async Task<T> Update(string url, T entity, int id)
         {
-            if (entity == null) return null;
+            if (entity == null) 
+                return null;
 
             var response = await _client.PutAsJsonAsync<T>(url + id, entity);
-            if (response.StatusCode == System.Net.HttpStatusCode.NoContent) return entity;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent) 
+                return entity;
+
             return null;
         }
 
