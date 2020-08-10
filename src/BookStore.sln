@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Core", "BookStore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Infrastructure", "BookStore.Infrastructure\BookStore.Infrastructure.csproj", "{9F7F46AE-F7F7-479D-B41F-F70C97B24DAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.UI", "BookStore.UI\BookStore.UI.csproj", "{493E7039-4D15-4D66-9337-DF071713ABEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.UI", "BookStore.UI\BookStore.UI.csproj", "{493E7039-4D15-4D66-9337-DF071713ABEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.UI.Wasm", "BookStore.UI.Wasm\BookStore.UI.Wasm.csproj", "{99C7BB48-E663-4156-B645-9E55B5B06876}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.UI.Wasm", "BookStore.UI.Wasm\BookStore.UI.Wasm.csproj", "{99C7BB48-E663-4156-B645-9E55B5B06876}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
