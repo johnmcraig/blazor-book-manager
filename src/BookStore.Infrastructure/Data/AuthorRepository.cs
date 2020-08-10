@@ -19,13 +19,17 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            var authors = await _context.Authors.ToListAsync();
+            var authors = await _context.Authors
+                .Include(a => a.Books)
+                .ToListAsync();
             return authors;
         }
 
         public async Task<IList<Author>> FindAuthorBySearch(string search)
         {
-            var authors = await _context.Authors.ToListAsync();
+            var authors = await _context.Authors
+                .Include(a => a.Books)
+                .ToListAsync();
             return authors;
         }
 
