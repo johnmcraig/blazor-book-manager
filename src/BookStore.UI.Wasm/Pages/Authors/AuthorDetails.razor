@@ -1,0 +1,71 @@
+﻿@page "/authors/details/{id}"
+
+@inject IAuthorRepository _repo
+@inject NavigationManager _navManager
+
+<h3>Author Details</h3>
+
+@if (Model == null)
+{
+    <div class="alert alert-dismissible alert-secondary">
+        <h4>Loading Data...</h4>
+    </div>
+}
+else
+{
+    <h3>Author ID: @Id</h3>
+
+    <div class="col-md-4">
+        <table class="table table-responsive">
+            <tr>
+                <td>First Name</td>
+                <td>@Model.FirstName</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>@Model.LastName</td>
+            </tr>
+            <tr>
+                <td>Biography</td>
+                <td>@Model.Bio</td>
+            </tr>
+        </table>
+        <br />
+        @if (Model.Books == null || Model.Books.Count < 1)
+        {
+            <div class="alert alert-dismissible alert-secondary">
+                No Books for this Author
+            </div>
+        }
+        else
+        {
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h4>Author's Books</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var book in Model.Books)
+                    {
+                        <li class="list-group-item">@book.Title - @book.Price </li>
+                    }
+                </ul>
+            </div>
+        }
+
+    </div>
+}
+
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private Author Model = new Author();
+
+    protected async override Task OnInitializedAsync()
+    {
+        int id = int.Parse(Id);
+        Model = await _repo.GetSingle(Endpoints.AuthorsEndpont, id);
+    }
+}
