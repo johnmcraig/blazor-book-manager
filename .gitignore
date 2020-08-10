@@ -6,4 +6,8 @@ obj/
 .idea/
 
 **.db
+**.db-wal
+**.db-shm
 **.txt
+src/BookStore.Api/BookShop.db-wal
+src/BookStore.Api/BookShop.db-shm
