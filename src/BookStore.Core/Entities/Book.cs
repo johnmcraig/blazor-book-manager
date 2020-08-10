@@ -13,6 +13,8 @@ namespace BookStore.Core.Entities
         public string Isbn { get; set; }
         public string Image { get; set; }
         public decimal? Price { get; set; }
-        public int AuthorId { get; set; }
+
+        public int? AuthorId { get; set; }
+        public Author Author { get; set; }
     }
 }
