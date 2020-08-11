@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BookStore.Infrastructure.Data
 {
@@ -16,6 +17,11 @@ namespace BookStore.Infrastructure.Data
         }
 
         public async Task<IList<T>> FindAll()
+        {
+            return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task<IList<T>> FindBySearch(string search)
         {
             return await _context.Set<T>().ToListAsync();
         }

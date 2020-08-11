@@ -90,7 +90,7 @@ namespace BookStore.Infrastructure.Data
 
         }
 
-        public async Task<IList<Book>> FindBookBySearch(string search)
+        public async Task<IList<Book>> FindBySearch(string search)
         {
             string sql = "SELECT * FROM Books WHERE Title LIKE @Search " +
                          "UNION SELECT * FROM Books WHERE Summary LIKE @Search";

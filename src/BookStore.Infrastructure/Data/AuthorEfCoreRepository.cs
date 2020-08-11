@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class AuthorRepository : IAuthorRepository, IEfCoreExtensions
+    public class AuthorEfCoreRepository : IAuthorEfRepository, IEfCoreExtensions
     {
         private readonly StoreContext _context;
 
-        public AuthorRepository(StoreContext context)
+        public AuthorEfCoreRepository(StoreContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace BookStore.Infrastructure.Data
             return authors;
         }
 
-        public async Task<IList<Author>> FindAuthorBySearch(string search)
+        public async Task<IList<Author>> FindBySearch(string search)
         {
             var authors = await _context.Authors
                 .Include(a => a.Books)
@@ -35,7 +35,9 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors
+                .Include(q => q.Books)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return author;
         }
         

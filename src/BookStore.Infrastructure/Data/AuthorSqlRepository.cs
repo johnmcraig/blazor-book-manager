@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class AuthorSqlRepository : IAuthorRepository
+    public class AuthorSqlRepository : IAuthorEfRepository
     {
         private readonly ISqlDataAccess _sqliteData;
         private readonly ILogger<AuthorSqlRepository> _logger;
@@ -89,7 +89,7 @@ namespace BookStore.Infrastructure.Data
             
         }
 
-        public async Task<IList<Author>> FindAuthorBySearch(string search)
+        public async Task<IList<Author>> FindBySearch(string search)
         {
             string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search " +
                          "UNION SELECT * FROM Authors WHERE LastName LIKE @Search";

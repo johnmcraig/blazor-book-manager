@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class BookRepository : IBookRepository
+    public class BookEfCoreRepository : IBookRepository
     {
         private readonly StoreContext _context;
 
-        public BookRepository(StoreContext context)
+        public BookEfCoreRepository(StoreContext context)
         {
             _context = context;
         }
 
         public async Task<IList<Book>> FindAll()
         {
-            var books = await _context.Books.ToListAsync();
+            var books = await _context.Books
+                .Include(b => b.Author)
+                .ToListAsync();
             return books;
         }
 
-        public async Task<IList<Book>> FindBookBySearch(string search)
+        public async Task<IList<Book>> FindBySearch(string search)
         {
             var books = await _context.Books.ToListAsync();
             return books;
@@ -29,7 +31,9 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Book> FindById(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(q => q.Author)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return book;
         }
 

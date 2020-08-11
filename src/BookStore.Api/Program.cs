@@ -27,7 +27,7 @@ namespace BookStore.Api
                 {
                     var dbContext = services.GetRequiredService<StoreContext>();
                     await dbContext.Database.MigrateAsync();
-                    //await StoreContextSeed.SeedAsync(dbContext, loggerFactory);
+                    await StoreContextSeed.SeedAsync(dbContext, loggerFactory);
                 }
                 catch (Exception ex)
                 {
