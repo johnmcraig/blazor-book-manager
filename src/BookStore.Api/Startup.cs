@@ -20,6 +20,7 @@ namespace BookStore.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure();
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", 
@@ -29,7 +30,10 @@ namespace BookStore.Api
                     .AllowAnyHeader());
             });
             services.AddSwaggerDocumentation();
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(opt => {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

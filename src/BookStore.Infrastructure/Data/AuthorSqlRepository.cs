@@ -71,8 +71,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = "SELECT a.Id, a.FirstName, a.LastName, a.Bio, b.Title FROM Authors a " +
-                "LEFT JOIN Books b ON a.Id = b.AuthorId";
+            string sql = "SELECT * FROM Authors JOIN Books ON Authors.Id = Books.AuthorId";
 
             try
             {

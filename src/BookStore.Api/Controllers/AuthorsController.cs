@@ -37,7 +37,8 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation("Attempting to get all authors...");
 
-                    var authors = await _unitOfWork.Repository<Author>().FindAll();
+                    //var authors = await _unitOfWork.Repository<Author>().FindAll();
+                    var authors = await _authorRepo.FindAll();
 
                     _logger.LogInformation("Successfully got all Authors");
 
@@ -78,9 +79,10 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single record with id:{id}");
 
-                var author = await _unitOfWork.Repository<Author>().FindById(id);
+                //var author = await _unitOfWork.Repository<Author>().FindById(id);
+                var author = await _authorRepo.FindById(id);
 
-                if(author == null)
+                if (author == null)
                 {
                     _logger.LogWarning($"{location}: Record with id:{id} was not found");
                     return NotFound();

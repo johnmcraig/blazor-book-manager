@@ -61,8 +61,7 @@ namespace BookStore.UI.Wasm.Services
             {
                 _logger.LogError(ex.Message);
                 return null;
-            }
-            
+            }          
         }
 
         public async Task<T> GetSingle(string url, int id)

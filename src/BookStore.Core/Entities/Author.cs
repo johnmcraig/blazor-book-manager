@@ -6,7 +6,7 @@ using System.Text;
 namespace BookStore.Core.Entities
 {
     [Table("Authors")]
-    public partial class Author : BaseEntity
+    public class Author : BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
