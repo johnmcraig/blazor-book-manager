@@ -12,6 +12,6 @@ namespace BookStore.Core.Entities
         public string LastName { get; set; }
         public string FullName { get { return $"{FirstName} {LastName}"; } }
         public string Bio { get; set; }
-        public virtual IList<Book> Books { get; set; }
+        public IList<Book> Books { get; set; }
     }
 }

@@ -20,14 +20,14 @@ namespace BookStore.Infrastructure.Data
                     new Author
                     {
                         FirstName = "Jane",
-                        LastName ="Street",
-                        Bio =   "A pretty nice writer"
+                        LastName = "Street",
+                        Bio = "A pretty nice writer"
                     },
                     new Author
                     {
                         FirstName = "Bill",
-                        LastName ="Hardley",
-                        Bio =   "Fun is the name of the game"
+                        LastName = "Hardley",
+                        Bio = "Fun is the name of the game"
                     }
                 };
 
@@ -36,14 +36,14 @@ namespace BookStore.Infrastructure.Data
 
             if (!dbContext.Books.Any())
             {
-                var replies = new List<Book>
+                var books = new List<Book>
                 {
                     new Book
                     {
                         AuthorId = 1,
                         Title = "Super Thriller",
                         Year = 2009,
-                        Summary = "A heart reacing thriller story",
+                        Summary = "A heart racing thriller story",
                         Isbn = "TEST-1111-22BN",
                         Price = (decimal?)19.99
                     },
@@ -52,7 +52,7 @@ namespace BookStore.Infrastructure.Data
                         AuthorId = 1,
                         Title = "Super Thriller 2",
                         Year = 2010,
-                        Summary = "A sequel to the best heart reacing thriller",
+                        Summary = "A sequel to the best heart racing thriller story",
                         Isbn = "TEST-2222-23BN",
                         Price = (decimal?)29.99
                     },
@@ -76,7 +76,7 @@ namespace BookStore.Infrastructure.Data
                     }
                 };
 
-                await dbContext.Books.AddRangeAsync(replies);
+                await dbContext.Books.AddRangeAsync(books);
             }
 
             await dbContext.SaveChangesAsync();

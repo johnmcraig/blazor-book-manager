@@ -85,6 +85,7 @@ namespace BookStore.Api.Controllers
                 if (author == null)
                 {
                     _logger.LogWarning($"{location}: Record with id:{id} was not found");
+
                     return NotFound();
                 }
 
@@ -118,6 +119,7 @@ namespace BookStore.Api.Controllers
                 if(author == null)
                 {
                     _logger.LogWarning($"{location}: Empty request was submitted");
+
                     return BadRequest(ModelState);
                 }
 
@@ -125,16 +127,19 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogWarning($"{location}: Data was incomplete");
                     return BadRequest(ModelState);
+
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Author>().Create(author);
+                //var isSuccess = await _unitOfWork.Repository<Author>().Create(author);
+                var isSuccess = await _authorRepo.Create(author);
 
-                if(!isSuccess)
+                if (!isSuccess)
                 {
                     return InternalError($"{location}: Record creation failed");
                 }
 
                 _logger.LogInformation($"Successfully submitted an Author object as: {author}");
+
                 return Created("CreateAuthor", new { author });
             }
             catch (Exception ex)
@@ -165,6 +170,7 @@ namespace BookStore.Api.Controllers
                 if(id < 1 || authorToUpdate == null || id != authorToUpdate.Id)
                 {
                     _logger.LogWarning($"{location}: Record update failed with invalid data");
+
                     return BadRequest();
                 }
 
@@ -173,6 +179,7 @@ namespace BookStore.Api.Controllers
                 if(ifExists == false)
                 {
                     _logger.LogWarning($"{location}: Record with id:{id} was not found");
+
                     return NotFound();
                 }
 
@@ -181,9 +188,10 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Author>().Update(authorToUpdate);
+                //var isSuccess = await _unitOfWork.Repository<Author>().Update(authorToUpdate);
+                var isSuccess = await _authorRepo.Update(authorToUpdate);
 
-                if(!isSuccess)
+                if (!isSuccess)
                 {
                     return InternalError($"{location}: Update operation failed");
                 }
@@ -220,17 +228,19 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                var author = await _unitOfWork.Repository<Author>().FindById(id);
+                //var author = await _unitOfWork.Repository<Author>().FindById(id);
+                var author = await _authorRepo.FindById(id);
 
-                if(author == null)
+                if (author == null)
                 {
                     _logger.LogWarning($"{location}: Record with id:{id} was not found");
                     return NotFound();
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Author>().Delete(author);
+                //var isSuccess = await _unitOfWork.Repository<Author>().Delete(author);
+                var isSuccess = await _authorRepo.Delete(author);
 
-                if(!isSuccess)
+                if (!isSuccess)
                 {
                     return InternalError($"{location}: Delete operation failed");
                 }
@@ -246,11 +256,13 @@ namespace BookStore.Api.Controllers
         private ObjectResult InternalError(string message)
         {
             _logger.LogError(message);
+
             return StatusCode(500, "Something went wrong. Please contact the Administrator."); 
         }
         private string GetControllerActionNames()
         {
             var controller = ControllerContext.ActionDescriptor.ControllerName;
+
             var action = ControllerContext.ActionDescriptor.ActionName;
 
             return $"{controller} - {action}";

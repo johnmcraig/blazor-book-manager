@@ -37,7 +37,8 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation($"{location}: Attempting to retrieve a list of records...");
 
-                    var books = await _unitOfWork.Repository<Book>().FindAll();
+                    //var books = await _unitOfWork.Repository<Book>().FindAll();
+                    var books = await _bookRepo.FindAll();
 
                     _logger.LogInformation($"{location}: Successfully returned a list of records");
 
@@ -77,7 +78,8 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single book with id: {id}");
 
-                var book = await _unitOfWork.Repository<Book>().FindById(id);
+                //var book = await _unitOfWork.Repository<Book>().FindById(id);
+                var book = await _bookRepo.FindById(id);
 
                 if (book == null)
                 {
@@ -116,16 +118,19 @@ namespace BookStore.Api.Controllers
                 if (book == null)
                 {
                     _logger.LogWarning($"{location}: Empty request was submitted");
+
                     return BadRequest(ModelState);
                 }
 
                 if (!ModelState.IsValid)
                 {
                     _logger.LogWarning($"{location}: Data was incomplete");
+
                     return BadRequest(ModelState);
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Book>().Create(book);
+                //var isSuccess = await _unitOfWork.Repository<Book>().Create(book);
+                var isSuccess = await _bookRepo.Create(book);
 
                 if (!isSuccess)
                 {
@@ -133,6 +138,7 @@ namespace BookStore.Api.Controllers
                 }
 
                 _logger.LogInformation($"{location}: Successfully submitted a record as: {book}");
+
                 return Created("CreateBook", new { book });
             }
             catch (Exception ex)
@@ -168,7 +174,8 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Book>().Update(bookToUpdate);
+                //var isSuccess = await _unitOfWork.Repository<Book>().Update(bookToUpdate);
+                var isSuccess = await _bookRepo.Update(bookToUpdate);
 
                 if (!isSuccess)
                 {
@@ -200,18 +207,22 @@ namespace BookStore.Api.Controllers
                 if (id < 1)
                 {
                     _logger.LogWarning($"{location}: Record deletion failed with invalid data");
+
                     return BadRequest();
                 }
 
-                var book = await _unitOfWork.Repository<Book>().FindById(id);
+                //var book = await _unitOfWork.Repository<Book>().FindById(id);
+                var book = await _bookRepo.FindById(id);
 
                 if (book == null)
                 {
                     _logger.LogWarning($"{location}: Record with id:{id} was not found");
+
                     return NotFound();
                 }
 
-                var isSuccess = await _unitOfWork.Repository<Book>().Delete(book);
+                //var isSuccess = await _unitOfWork.Repository<Book>().Delete(book);
+                var isSuccess = await _bookRepo.Delete(book);
 
                 if (!isSuccess)
                 {
@@ -229,12 +240,14 @@ namespace BookStore.Api.Controllers
         private ObjectResult InternalError(string message)
         {
             _logger.LogError(message);
+
             return StatusCode(500, "Something went wrong. Please contact the Administrator.");
         }
 
         private string GetControllerActionNames()
         {
             var controller = ControllerContext.ActionDescriptor.ControllerName;
+
             var action = ControllerContext.ActionDescriptor.ActionName;
 
             return $"{controller} - {action}";

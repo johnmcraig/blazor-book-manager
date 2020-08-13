@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,13 @@ namespace BookStore.Infrastructure.Data
         private readonly ISqlDataAccess _sqliteData;
         private readonly ILogger<AuthorSqlRepository> _logger;
         private readonly string connectionString = "sqlite";
+        private readonly IDbConnection cnn;
 
-        public AuthorSqlRepository(ISqlDataAccess sqliteData, ILogger<AuthorSqlRepository> logger)
+        public AuthorSqlRepository(ISqlDataAccess sqliteData, ILogger<AuthorSqlRepository> logger, IConfiguration configuration)
         {
             _sqliteData = sqliteData;
             _logger = logger;
+            this.cnn = new SqliteConnection(configuration.GetConnectionString(connectionString));
         }
 
         public async Task<bool> Create(Author entity)
@@ -71,13 +74,32 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = "SELECT * FROM Authors JOIN Books ON Authors.Id = Books.AuthorId";
-
+            string sql = @"SELECT a.*, b.* FROM Books AS b INNER JOIN Authors AS a ON b.AuthorId = a.Id;";
+            
             try
             {
-                var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
+                //var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
+                //return authors.ToList();
 
-                return authors.ToList();
+                //using (var connection = new SqliteConnection(connectionString))
+                //{
+                //    connection.Open();
+
+                var authorDic = new Dictionary<int, Author>();
+
+                var list = await cnn.QueryAsync<Author, Book, Author>(sql, (a, b) =>
+                {
+                    if (!authorDic.TryGetValue(a.Id, out var currentAuthor))
+                    {
+                        currentAuthor = a;
+                        authorDic.Add(currentAuthor.Id, currentAuthor);
+                    }
+                    currentAuthor.Books.Add(b);
+                    return currentAuthor;
+                }, splitOn: "AuthorId");
+
+                return list.Distinct().ToList();
+                //}
             }
             catch (Exception ex)
             {
@@ -152,14 +174,13 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                using (var connection = new SqliteConnection(connectionString))
-                {
-                    connection.Open();
+                using var connection = new SqliteConnection(connectionString);
 
-                    var isExists = await connection.QueryFirstAsync<bool>(sql, new { Id = id });
+                connection.Open();
 
-                    return isExists;
-                }
+                var isExists = await connection.QueryFirstAsync<bool>(sql, new { Id = id });
+
+                return isExists;
             }
             catch (Exception ex)
             {
