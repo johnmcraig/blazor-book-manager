@@ -1,0 +1,20 @@
+﻿@page "/authors/update/{id}"
+
+@inject IAuthorRepository _repo
+@inject NavigationManager _navManager
+
+
+<h3>Update Current Author</h3>
+
+<button @onclick="BackToList" class="btn btn-outline-secondary">
+    <span class="oi oi-media-skip-backward"></span>
+    Back to List
+</button>
+
+@code {
+
+    public void BackToList()
+    {
+        _navManager.NavigateTo("/authors/");
+    }
+}

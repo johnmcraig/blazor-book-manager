@@ -14,8 +14,6 @@
 }
 else
 {
-    <h4>Author ID: @Id</h4>
-
     <div class="col-md-4">
         <table class="table table-responsive">
             <tr>
@@ -31,7 +29,9 @@ else
                 <td>@Model.Bio</td>
             </tr>
         </table>
+
         <br />
+
         @if (Model.Books == null || Model.Books.Count < 1)
         {
             <div class="alert alert-dismissible alert-secondary">
@@ -56,11 +56,13 @@ else
     </div>
 }
 
-@*<button @onclick="GoToEdit" class="btn btn-outline-warning">
+<br />
+
+<button @onclick="GoToEdit" class="btn btn-outline-warning">
     <span class="oi oi-pencil"></span>
-    Edit Author
+    Update Author
 </button>
-<button @onclick="GoToDelete" class="btn btn-outline-danger">
+@*<button @onclick="GoToDelete" class="btn btn-outline-danger">
     <span class="oi oi-circle-x"></span>
     Delete Author
 </button>*@
@@ -88,10 +90,10 @@ else
         _navManager.NavigateTo("/authors/");
     }
 
-    //private void GoToEdit()
-    //{
-    //    _navManager.NavigateTo($"/authors/edit/{Model.Id}");
-    //}
+    private void GoToEdit()
+    {
+        _navManager.NavigateTo($"/authors/update/{Model.Id}");
+    }
 
     //private void GoToDelete()
     //{
