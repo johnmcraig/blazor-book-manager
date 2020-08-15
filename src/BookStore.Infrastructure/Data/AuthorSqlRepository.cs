@@ -74,31 +74,31 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = @"SELECT a.*, b.* FROM Books AS b INNER JOIN Authors AS a ON b.AuthorId = a.Id;";
+            string sql = @"SELECT a.*, b.* FROM Authors AS a LEFT JOIN Books AS b ON a.Id = b.AuthorId;";
             
             try
             {
-                //var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
-                //return authors.ToList();
+                var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
+                return authors.ToList();
 
                 //using (var connection = new SqliteConnection(connectionString))
                 //{
                 //    connection.Open();
 
-                var authorDic = new Dictionary<int, Author>();
+                //var authorDic = new Dictionary<int, Author>();
 
-                var list = await cnn.QueryAsync<Author, Book, Author>(sql, (a, b) =>
-                {
-                    if (!authorDic.TryGetValue(a.Id, out var currentAuthor))
-                    {
-                        currentAuthor = a;
-                        authorDic.Add(currentAuthor.Id, currentAuthor);
-                    }
-                    currentAuthor.Books.Add(b);
-                    return currentAuthor;
-                }, splitOn: "AuthorId");
+                //var list = await cnn.QueryAsync<Author, Book, Author>(sql, (a, b) =>
+                //{
+                //    if (!authorDic.TryGetValue(a.Id, out var currentAuthor))
+                //    {
+                //        currentAuthor = a;
+                //        authorDic.Add(currentAuthor.Id, currentAuthor);
+                //    }
+                //    currentAuthor.Books.Add(b);
+                //    return currentAuthor;
+                //}, splitOn: "AuthorId");
 
-                return list.Distinct().ToList();
+                //return list.Distinct().ToList();
                 //}
             }
             catch (Exception ex)

@@ -23,6 +23,7 @@ namespace BookStore.Infrastructure.DataAccess
             using (IDbConnection connection = new SqliteConnection(_config.GetConnectionString(connectionStringName)))
             {
                 connection.Open();
+
                 var rows = await connection.QueryAsync<T>(sql, parameters, commandType: CommandType.Text);
 
                 return rows.ToList();
@@ -34,6 +35,7 @@ namespace BookStore.Infrastructure.DataAccess
             using (IDbConnection connection = new SqliteConnection(_config.GetConnectionString(connectionStringName)))
             {
                 connection.Open();
+
                 await connection.ExecuteAsync(sql, parameters, commandType: CommandType.Text);
             }
         }
