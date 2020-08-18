@@ -45,7 +45,7 @@ namespace BookStore.Infrastructure.Data
                         Year = 2009,
                         Summary = "A heart racing thriller story",
                         Isbn = "TEST-1111-22BN",
-                        Price = (decimal?)19.99
+                        Price = 19.99m
                     },
                     new Book
                     {
@@ -54,7 +54,7 @@ namespace BookStore.Infrastructure.Data
                         Year = 2010,
                         Summary = "A sequel to the best heart racing thriller story",
                         Isbn = "TEST-2222-23BN",
-                        Price = (decimal?)29.99
+                        Price = 29.99m
                     },
                     new Book
                     {
@@ -63,7 +63,7 @@ namespace BookStore.Infrastructure.Data
                         Year = 2011,
                         Summary = "The third installment of heart racing thriller series",
                         Isbn = "TEST-3333-32BN",
-                        Price = (decimal?)39.99
+                        Price = 39.99m
                     },
                     new Book
                     {
@@ -72,7 +72,7 @@ namespace BookStore.Infrastructure.Data
                         Year = 2015,
                         Summary = "Light hearted fun in the sun",
                         Isbn = "TEST-4444-45BN",
-                        Price = (decimal?)39.99
+                        Price = 39.99m
                     }
                 };
 

@@ -17,7 +17,7 @@ namespace BookStore.UI.Wasm.Services
         private readonly ILocalStorageService _localStorage;
         private readonly ILogger<RepositoryService<T>> _logger;
 
-        public RepositoryService(HttpClient client, ILogger<RepositoryService<T>> logger)
+        protected RepositoryService(HttpClient client, ILogger<RepositoryService<T>> logger)
         {
             _client = client;
             _logger = logger;
@@ -28,7 +28,7 @@ namespace BookStore.UI.Wasm.Services
         {
            // _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", await GetBearertoken());
 
-            HttpResponseMessage response = await _client.PostAsJsonAsync<T>(url, entity);
+            var response = await _client.PostAsJsonAsync<T>(url, entity);
             
             if (response.StatusCode == System.Net.HttpStatusCode.Created) 
                 return entity;
@@ -41,7 +41,7 @@ namespace BookStore.UI.Wasm.Services
             if (id < 1) 
                 return false;
 
-            HttpResponseMessage response = await _client.DeleteAsync(url + id);
+            var response = await _client.DeleteAsync(url + id);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 return true;
@@ -84,7 +84,7 @@ namespace BookStore.UI.Wasm.Services
             if (entity == null) 
                 return null;
 
-            var response = await _client.PutAsJsonAsync<T>(url + id, entity);
+            var response = await _client.PutAsJsonAsync(url + id, entity);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent) 
                 return entity;
