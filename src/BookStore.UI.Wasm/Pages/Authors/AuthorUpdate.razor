@@ -20,7 +20,7 @@
     protected override async Task OnInitializedAsync()
     {
         int id = Convert.ToInt32(Id);
-        Model = await _repo.GetSingle(Endpoints.AuthorsEndpont, id);
+        Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, id);
     }
 
     public void BackToList()

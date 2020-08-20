@@ -46,7 +46,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Model = await _repo.GetAll(Endpoints.AuthorsEndpont);
+        Model = await _repo.GetAll(Endpoints.AuthorsEndpoint);
     }
 
 }
