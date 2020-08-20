@@ -10,10 +10,10 @@ namespace BookStore.Api.Controllers
     public class AuthorsController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuthorEfRepository _authorRepo;
+        private readonly IAuthorRepository _authorRepo;
         private readonly ILoggerService _logger;
 
-        public AuthorsController(IAuthorEfRepository authorRepo, IUnitOfWork unitOfWork, ILoggerService logger)
+        public AuthorsController(IAuthorRepository authorRepo, IUnitOfWork unitOfWork, ILoggerService logger)
         {
             _authorRepo = authorRepo;
             _logger = logger;
