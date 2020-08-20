@@ -15,18 +15,18 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class AuthorSqlRepository : IAuthorEfRepository
+    public class AuthorSqlRepository : IAuthorRepository
     {
         private readonly ISqlDataAccess _sqliteData;
         private readonly ILogger<AuthorSqlRepository> _logger;
         private readonly string connectionString = "sqlite";
-        private readonly IDbConnection cnn;
+        private readonly IDbConnection _cnn;
 
         public AuthorSqlRepository(ISqlDataAccess sqliteData, ILogger<AuthorSqlRepository> logger, IConfiguration configuration)
         {
             _sqliteData = sqliteData;
             _logger = logger;
-            this.cnn = new SqliteConnection(configuration.GetConnectionString(connectionString));
+            _cnn = new SqliteConnection(configuration.GetConnectionString(connectionString));
         }
 
         public async Task<bool> Create(Author entity)
@@ -74,7 +74,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = @"SELECT a.*, b.* FROM Authors AS a LEFT JOIN Books AS b ON a.Id = b.AuthorId;";
+            string sql = "SELECT a.*, b.* FROM Authors AS a INNER JOIN Books AS b ON a.Id = b.AuthorId";
             
             try
             {
@@ -85,20 +85,14 @@ namespace BookStore.Infrastructure.Data
                 //{
                 //    connection.Open();
 
-                //var authorDic = new Dictionary<int, Author>();
-
-                //var list = await cnn.QueryAsync<Author, Book, Author>(sql, (a, b) =>
-                //{
-                //    if (!authorDic.TryGetValue(a.Id, out var currentAuthor))
+                //    var authorList = await _cnn.QueryAsync<Author, Book, Author>(sql, (authors, books) =>
                 //    {
-                //        currentAuthor = a;
-                //        authorDic.Add(currentAuthor.Id, currentAuthor);
-                //    }
-                //    currentAuthor.Books.Add(b);
-                //    return currentAuthor;
-                //}, splitOn: "AuthorId");
+                //        authors.Books ??= new List<Book>();
+                //        authors.Books.Add(books);
+                //        return authors;
+                //    }); //splitOn: "AuthorId"
 
-                //return list.Distinct().ToList();
+                //    return authorList.Distinct().ToList();
                 //}
             }
             catch (Exception ex)
