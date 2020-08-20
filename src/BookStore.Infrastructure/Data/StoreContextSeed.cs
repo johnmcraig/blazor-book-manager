@@ -21,13 +21,13 @@ namespace BookStore.Infrastructure.Data
                     {
                         FirstName = "Jane",
                         LastName = "Street",
-                        Bio = "A pretty nice writer"
+                        Bio = "A pretty nice writer."
                     },
                     new Author
                     {
                         FirstName = "Bill",
-                        LastName = "Hardley",
-                        Bio = "Fun is the name of the game"
+                        LastName = "Hartley",
+                        Bio = "Fun is the name of the game."
                     }
                 };
 
