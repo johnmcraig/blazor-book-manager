@@ -13,7 +13,7 @@ namespace BookStore.Infrastructure
             services.AddDbContext<StoreContext>();
 
             services.AddScoped<IBookRepository, BookEfCoreRepository>();
-            services.AddScoped<IAuthorEfRepository, AuthorEfCoreRepository>();
+            services.AddScoped<IAuthorRepository, AuthorEfCoreRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
