@@ -1,9 +1,9 @@
-﻿@page "/authors/delete/{id}"
+﻿@page "/authors/delete/{Id}"
 
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
 
-    <h3>Delete Author</h3>
+<h3>Delete Author</h3>
 
 <button @onclick="BackToList" class="btn btn-outline-secondary">
     <span class="oi oi-media-skip-backward"></span>
@@ -21,8 +21,6 @@
         int id = Convert.ToInt32(Id);
         Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, id);
     }
-
-
 
     public void BackToList()
     {
