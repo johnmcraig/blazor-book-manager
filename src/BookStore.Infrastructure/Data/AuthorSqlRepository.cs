@@ -31,7 +31,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Create(Author entity)
         {
-            string sql = "INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
+            string sql = @"INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
 
             try
             {
@@ -56,7 +56,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Delete(Author entity)
         {
-            string sql = "DELETE FROM Authors WHERE Id = @Id";
+            string sql = @"DELETE FROM Authors WHERE Id = @Id";
 
             try
             {
@@ -74,23 +74,18 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = "SELECT a.*, b.* FROM Authors AS a INNER JOIN Books AS b ON a.Id = b.AuthorId";
+            string sql = @"SELECT a.*, b.* FROM Authors AS a INNER JOIN Books AS b ON a.Id = b.AuthorId";
             
             try
             {
                 var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
                 return authors.ToList();
 
-                //using (var connection = new SqliteConnection(connectionString))
-                //{
-                //    connection.Open();
-
-                //    var authorList = await _cnn.QueryAsync<Author, Book, Author>(sql, (authors, books) =>
+                //    var authorList = await _sqliteData.LoadData<Author, Book, Author>(sql, (authors, books) =>
                 //    {
-                //        authors.Books ??= new List<Book>();
-                //        authors.Books.Add(books);
+                //        authors.Books ??= books;      
                 //        return authors;
-                //    }); //splitOn: "AuthorId"
+                //    }); 
 
                 //    return authorList.Distinct().ToList();
                 //}
@@ -106,8 +101,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindBySearch(string search)
         {
-            string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search " +
-                         "UNION SELECT * FROM Authors WHERE LastName LIKE @Search";
+            string sql = @"SELECT * FROM Authors WHERE FirstName LIKE @Search UNION 
+                            SELECT * FROM Authors WHERE LastName LIKE @Search";
 
             try
             {
@@ -125,7 +120,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            string sql = "SELECT * FROM Authors Where Id = @Id";
+            string sql = @"SELECT * FROM Authors Where Id = @Id";
 
             try
             {
@@ -143,8 +138,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Update(Author entity)
         {
-            string sql = "UPDATE Authors SET FirstName = @FirstName, LastName = @LastName, Bio = @Bio" +
-                " WHERE Id = @Id";
+            string sql = @"UPDATE Authors SET FirstName = @FirstName, LastName = @LastName, Bio = @Bio WHERE Id = @Id";
 
             try
             {
@@ -162,9 +156,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors " +
-                "WHERE Id = @Id)" + 
-                "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
+            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors WHERE Id = @Id) 
+                            THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
             {
