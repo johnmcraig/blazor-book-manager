@@ -1,4 +1,4 @@
-﻿@page "/authors/details/{id}"
+﻿@page "/authors/details/{Id}"
 
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
@@ -8,9 +8,7 @@
 
 @if (Model == null)
 {
-    <div class="alert alert-dismissible alert-secondary">
-        <h4>Loading Data...</h4>
-    </div>
+    <LoadingPrompt Message="Loading Data for Details" />
 }
 else
 {
@@ -62,10 +60,10 @@ else
     <span class="oi oi-pencil"></span>
     Update Author
 </button>
-@*<button @onclick="GoToDelete" class="btn btn-outline-danger">
+<button @onclick="GoToDelete" class="btn btn-outline-danger">
     <span class="oi oi-circle-x"></span>
     Delete Author
-</button>*@
+</button>
 <button @onclick="BackToList" class="btn btn-outline-secondary">
     <span class="oi oi-media-skip-backward"></span>
     Back To List
@@ -95,8 +93,8 @@ else
         _navManager.NavigateTo($"/authors/update/{Model.Id}");
     }
 
-    //private void GoToDelete()
-    //{
-    //    _navManager.NavigateTo($"/authors/delete/{Model.Id}");
-    //}
+    private void GoToDelete()
+    {
+        _navManager.NavigateTo($"/authors/delete/{Model.Id}");
+    }
 }
