@@ -30,10 +30,12 @@ namespace BookStore.Api
                     .AllowAnyHeader());
             });
             services.AddSwaggerDocumentation();
-
-            services.AddControllers().AddNewtonsoftJson(opt => {
+            
+            services.AddControllersWithViews().AddNewtonsoftJson(opt => {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,9 +60,15 @@ namespace BookStore.Api
 
             app.UseSwaggerDocumentation();
 
+            app.UseBlazorFrameworkFiles();
+
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
