@@ -33,14 +33,18 @@ else
         <label for="bio">Biography</label>
         <InputText @bind-Value="@Model.Bio" class="form-control" id="bio" />
     </div>
-    <button class="btn btn-success" type="submit">Submit Changes</button>
+    <button class="btn btn-success" type="submit">
+        Submit Changes
+    </button>
+
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back to List
+    </button>
 </EditForm>
 }
 
-<button @onclick="BackToList" class="btn btn-outline-secondary">
-    <span class="oi oi-media-skip-backward"></span>
-    Back to List
-</button>
+
 
 @code {
     [Parameter]
