@@ -4,13 +4,12 @@
 @inject HttpClient _client
 @inject NavigationManager _navManager
 
-<h3>Authors</h3>
+<h3>Authors List</h3>
+<hr />
 
 @if (Model == null)
 {
-    <div class="alert alert-dismissible alert-secondary">
-        <h4>Loading Data...</h4>
-    </div>
+    <LoadingPrompt Message="Loading Author list" />
 }
 else
 {
@@ -32,8 +31,12 @@ else
                     <a href="/authors/details/@author.Id" class="btn btn-primary">
                         <span class="oi oi-book"></span>
                     </a>
-                    <button class="btn btn-warning"><span class="oi oi-pencil"></span></button>
-                    <button class="btn btn-danger"><span class="oi oi-delete"></span></button>
+                    <a href="/authors/update/@author.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <a href="/authors/delete/@author.Id" class="btn btn-danger">
+                        <span class="oi oi-delete"></span>
+                    </a>
                 </td>
             </tr>
         }
