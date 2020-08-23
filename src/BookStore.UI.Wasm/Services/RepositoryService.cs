@@ -17,11 +17,11 @@ namespace BookStore.UI.Wasm.Services
         private readonly ILocalStorageService _localStorage;
         private readonly ILogger<RepositoryService<T>> _logger;
 
-        protected RepositoryService(HttpClient client, ILogger<RepositoryService<T>> logger)
+        protected RepositoryService(HttpClient client, ILogger<RepositoryService<T>> logger, ILocalStorageService localStorage)
         {
             _client = client;
             _logger = logger;
-            //  ILocalStorageService localStorage_localStorage = localStorage;
+            _localStorage = localStorage;
         }
 
         public async Task<T> Create(string url, T entity)
@@ -79,22 +79,22 @@ namespace BookStore.UI.Wasm.Services
             } 
         }
 
-        public async Task<T> Update(string url, T entity, int id)
+        public async Task<bool> Update(string url, T entity, int id)
         {
             if (entity == null) 
-                return null;
+                return false;
 
             var response = await _client.PutAsJsonAsync(url + id, entity);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent) 
-                return entity;
+                return true;
 
-            return null;
+            return false;
         }
 
-        //private async Task<string> GetBearerToken()
-        //{
-        //    return await _localStorage.GetItemAsync<string>("authToken");
-        //}
+        private async Task<string> GetBearerToken()
+        {
+           return await _localStorage.GetItemAsync<string>("authToken");
+        }
     }
 }
