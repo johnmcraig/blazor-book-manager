@@ -2,11 +2,7 @@
 using BookStore.UI.Wasm.Contracts;
 using BookStore.UI.Wasm.Models;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace BookStore.UI.Wasm.Services
 {
