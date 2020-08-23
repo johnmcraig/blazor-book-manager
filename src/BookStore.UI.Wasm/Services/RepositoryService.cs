@@ -26,7 +26,7 @@ namespace BookStore.UI.Wasm.Services
 
         public async Task<T> Create(string url, T entity)
         {
-           // _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", await GetBearertoken());
+           // _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", await GetBearerToken());
 
             var response = await _client.PostAsJsonAsync<T>(url, entity);
             
