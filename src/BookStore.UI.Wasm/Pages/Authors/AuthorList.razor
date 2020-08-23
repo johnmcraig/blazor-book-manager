@@ -7,7 +7,7 @@
 <h3>Authors List</h3>
 <hr />
 
-@if (Model == null)
+@if (_model == null)
 {
     <LoadingPrompt Message="Loading Author list" />
 }
@@ -22,7 +22,7 @@ else
             </tr>
         </thead>
         <tbody>
-        @foreach (var author in Model)
+        @foreach (var author in _model)
         {
             <tr class="table-secondary">
                 <td>@author.FirstName</td>
@@ -45,11 +45,11 @@ else
 }
 
 @code {
-    private IList<Author> Model;
+    private IList<Author> _model;
 
     protected override async Task OnInitializedAsync()
     {
-        Model = await _repo.GetAll(Endpoints.AuthorsEndpoint);
+        _model = await _repo.GetAll(Endpoints.AuthorsEndpoint);
     }
 
 }
