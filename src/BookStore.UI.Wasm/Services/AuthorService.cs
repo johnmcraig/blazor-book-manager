@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using Blazored.LocalStorage;
 using BookStore.UI.Wasm.Contracts;
 using BookStore.UI.Wasm.Models;
