@@ -7,10 +7,10 @@
 <h3>Update Current Author</h3>
 <hr />
 
-@*@if (IsSuccessful == null)
+@if (!IsSuccessful)
 {
     <ErrorMessage Message="Error! Something went wrong with the current operation." />
-}*@
+}
 
 @if (Model == null)
 {
@@ -33,7 +33,9 @@ else
         <label for="bio">Biography</label>
         <InputText @bind-Value="@Model.Bio" class="form-control" id="bio" />
     </div>
+
     <button class="btn btn-success" type="submit">
+        <span class="oi oi-pencil"></span>
         Submit Changes
     </button>
 
@@ -52,7 +54,7 @@ else
 
     public Author Model = new Author();
 
-    //private bool IsSuccessful = true;
+    private bool IsSuccessful = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,15 +64,15 @@ else
 
     private async Task UpdateAuthor()
     {
-        var IsSuccessful = await _repo.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
+        IsSuccessful = await _repo.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
 
-        if(IsSuccessful != null)
+        if(IsSuccessful)
         {
             BackToList();
         }
         else
         {
-
+            IsSuccessful = false;
         }
     }
 
