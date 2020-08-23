@@ -12,18 +12,13 @@ namespace BookStore.UI.Wasm.Services
     {
         private readonly HttpClient _client;
         private readonly ILogger<AuthorService> _logger;
-        //private readonly ILocalStorageService _localStorage;
+        private readonly ILocalStorageService _localStorage;
 
-        public AuthorService(HttpClient client, ILogger<AuthorService> logger) : base(client, logger)
+        public AuthorService(HttpClient client, ILogger<AuthorService> logger, ILocalStorageService localStorage) : base(client, logger, localStorage)
         {
             _logger = logger;
             _client = client;
-            // , ILocalStorageService localStorage _localStorage = localStorage;
+            _localStorage = localStorage;
         }
-
-        //private async Task<string> GetBearerToken()
-        //{
-        //    return await _localStorage.GetItemAsync<string>("authToken");
-        //}
     }
 }
