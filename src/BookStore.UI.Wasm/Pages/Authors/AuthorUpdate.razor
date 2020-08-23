@@ -7,7 +7,7 @@
 <h3>Update Current Author</h3>
 <hr />
 
-@if (!IsSuccessful)
+@if (!_isSuccessful)
 {
     <ErrorMessage Message="Error! Something went wrong with the current operation." />
 }
@@ -18,32 +18,35 @@
 }
 else
 {
-<EditForm Model="Model" OnValidSubmit="UpdateAuthor">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label for="firstName">First Name</label>
-        <InputText @bind-Value="@Model.FirstName" class="form-control" id="firstName" />
-    </div>
-    <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <InputText @bind-Value="@Model.LastName" class="form-control" id="lastName" />
-    </div>
-    <div class="form-group">
-        <label for="bio">Biography</label>
-        <InputText @bind-Value="@Model.Bio" class="form-control" id="bio" />
-    </div>
+    <EditForm Model="Model" OnValidSubmit="UpdateAuthor">
+        
+        <DataAnnotationsValidator />
+        
+        <ValidationSummary />
+        
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <InputText @bind-Value="@Model.FirstName" class="form-control" id="firstName" />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <InputText @bind-Value="@Model.LastName" class="form-control" id="lastName" />
+        </div>
+        <div class="form-group">
+            <label for="bio">Biography</label>
+            <InputText @bind-Value="@Model.Bio" class="form-control" id="bio" />
+        </div>
 
-    <button class="btn btn-success" type="submit">
-        <span class="oi oi-pencil"></span>
-        Submit Changes
-    </button>
+        <button class="btn btn-success" type="submit">
+            <span class="oi oi-pencil"></span>
+            Submit Changes
+        </button>
 
-    <button @onclick="BackToList" class="btn btn-outline-secondary">
-        <span class="oi oi-media-skip-backward"></span>
-        Back to List
-    </button>
-</EditForm>
+        <button @onclick="BackToList" class="btn btn-outline-secondary">
+            <span class="oi oi-media-skip-backward"></span>
+            Back to List
+        </button>
+    </EditForm>
 }
 
 
@@ -54,25 +57,25 @@ else
 
     public Author Model = new Author();
 
-    private bool IsSuccessful = true;
+    private bool _isSuccessful = true;
 
     protected override async Task OnInitializedAsync()
     {
-        int id = Convert.ToInt32(Id);
+        var id = Convert.ToInt32(Id);
         Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, id);
     }
 
     private async Task UpdateAuthor()
     {
-        IsSuccessful = await _repo.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
+        _isSuccessful = await _repo.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
 
-        if(IsSuccessful)
+        if(_isSuccessful)
         {
             BackToList();
         }
         else
         {
-            IsSuccessful = false;
+            _isSuccessful = false;
         }
     }
 
