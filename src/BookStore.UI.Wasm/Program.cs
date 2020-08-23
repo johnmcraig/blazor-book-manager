@@ -26,6 +26,8 @@ namespace BookStore.UI.Wasm
             builder.Services.AddBlazoredToast();
             builder.Services.AddTransient(typeof(IRepositoryService<>), typeof(RepositoryService<>));
             builder.Services.AddTransient<IAuthorRepository, AuthorService>();
+            builder.Services.AddTransient<IBookRepository, BookService>();
+            builder.Services.AddOptions();
             await builder.Build().RunAsync();
         }
     }
