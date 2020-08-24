@@ -1,5 +1,73 @@
-﻿<h3>BookDetails</h3>
+﻿@page "/books/details/{Id}"
+
+@inject IBookRepository _repo
+@inject NavigationManager _navManager
+
+<h3>Book Details</h3>
+@if (Model == null)
+{
+    <LoadingPrompt Message="Loading Data for Details" />
+}
+else
+{
+    <div class="col-md-4">
+        <table class="table table-responsive">
+            <tr>
+                <td>Title</td>
+                <td>@Model.Title</td>
+            </tr>
+            <tr>
+                <td>Year</td>
+                <td>@Model.Year</td>
+            </tr>
+            <tr>
+                <td>ISBN</td>
+                <td>@Model.Isbn</td>
+            </tr>
+        </table>
+    </div>
+}
+<br/>
+
+<button @onclick="GoToEdit" class="btn btn-outline-warning">
+    <span class="oi oi-pencil"></span>
+    Update Book
+</button>
+
+<button @onclick="GoToDelete" class="btn btn-outline-danger">
+    <span class="oi oi-circle-x"></span>
+    Delete Book
+</button>
+
+<button @onclick="BackToList" class="btn btn-outline-secondary">
+    <span class="oi oi-media-skip-backward"></span>
+    Back To List
+</button>
 
 @code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private Book Model = new Book();
     
+    protected override async Task OnInitializedAsync()
+    {
+        var id = Convert.ToInt32(Id);
+        Model = await _repo.GetSingle(Endpoints.BooksEndpoint, id);
+    }
+    
+    private void BackToList()
+    {
+        _navManager.NavigateTo("/books/");
+    }
+
+    private void GoToEdit()
+    {
+        _navManager.NavigateTo($"/books/update/{Model.Id}");
+    }
+
+    private void GoToDelete()
+    {
+        _navManager.NavigateTo($"/books/delete/{Model.Id}");
+    }
 }
