@@ -1,5 +1,100 @@
-﻿<h3>BookDelete</h3>
+﻿@page "/books/delete/{Id}"
 
+@inject IBookRepository _repo
+@inject NavigationManager _navManager
+@inject IToastService _toastService
+
+<h3>Delete Book</h3>
+
+@if (!_isSuccessful)
+{
+    <ErrorMessage Message="Something Went Wrong With the Operation" />
+}
+
+@if (int.Parse(Id) < 1 || string.IsNullOrWhiteSpace(Id))
+{
+    <ErrorMessage Message="Invalid Selection. Please Try Again" />
+}
+else if (_model == null)
+{
+    <LoadingPrompt Message="Loading Author Details" />
+}
+else
+{
+    <div class="col-md-4">
+        <table class="table table-responsive">
+            <tr>
+                <td>Title</td>
+                <td>@_model.Title</td>
+            </tr>
+            <tr>
+                <td>Year</td>
+                <td>@_model.Year</td>
+            </tr>
+            <tr>
+                <td>ISBN</td>
+                <td>@_model.Isbn</td>
+            </tr>
+        </table>
+        <br/>
+        @if (_model.Author == null)
+        {
+            <div class="alert alert-dismissible alert-secondary">
+                No Authors for this record
+            </div>
+        }
+        else
+        {
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h4>Author</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    
+                </ul>
+            </div>
+        }
+
+    </div>
+}
+<br/>
+
+<button @onclick="DeleteBook" class="btn btn-danger">
+    <span class="oi oi-delete"></span>
+    Delete book
+</button>
+
+<button @onclick="BackToList" class="btn btn-outline-secondary">
+    <span class="oi oi-media-skip-backward"></span>
+    Back to List
+</button>
 @code {
+    [Parameter]
+    public string Id { get; set; }
     
+    private Book _model = new Book();
+
+    private bool _isSuccessful = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var id = Convert.ToInt32(Id);
+        _model = await _repo.GetSingle(Endpoints.BooksEndpoint, id);
+    }
+
+    private async Task DeleteBook()
+    {
+        _isSuccessful = await _repo.Delete(Endpoints.BooksEndpoint, _model.Id);
+        if (_isSuccessful)
+        {
+            _toastService.ShowSuccess("Successfully delete book record.", "");
+            BackToList();
+        }
+    }
+    
+    private void BackToList()
+    {
+        _navManager.NavigateTo("/books/");
+    }
+
 }
