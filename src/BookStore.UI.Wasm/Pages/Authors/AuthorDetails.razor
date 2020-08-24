@@ -82,7 +82,7 @@ else
     {
         var id = Convert.ToInt32(Id);
         Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, id);
-        _toastService.ShowInfo($"Now Viewing {Model.FirstName} {Model.LastName}", "");
+        _toastService.ShowInfo($"Now Viewing {Model.FirstName} {Model.LastName}");
     }
 
     private void BackToList()
