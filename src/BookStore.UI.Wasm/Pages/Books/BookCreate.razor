@@ -1,5 +1,44 @@
-﻿<h3>$COMPONENTNAME$</h3>
+﻿@page "/books/create/"
 
+@inject IBookRepository _repo
+@inject NavigationManager _navManager
+@inject IToastService _toastService
+
+<h3>Create Book</h3>
+
+<EditForm Model="_model" OnValidSubmit="CreateBook">
+    
+    <DataAnnotationsValidator />
+    
+    <ValidationSummary/>
+    
+    
+    
+    <button @onclick="CreateBook" class="ntn btn-success">
+        <span class="oi oi-pencil"></span>
+        Submit Book
+    </button>
+    
+    <button @onclick="BackToList" class="btn ">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+</EditForm>
 @code {
-  $END$
+    private Book _model = new Book();
+    
+    private async Task CreateBook()
+    {
+        var response = await _repo.Create(Endpoints.BooksEndpoint, _model);
+        if (response != null)
+        {
+            _toastService.ShowInfo("Successfully created book record", "");
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        _navManager.NavigateTo("/books");
+    }
 }
