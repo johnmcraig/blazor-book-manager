@@ -5,7 +5,12 @@
 @inject NavigationManager _navManager
 
 <h3>Authors List</h3>
-<hr />
+
+<br />
+
+<a href="/authors/create/" class="btn btn-primary p-1 m-2">
+    <span class="oi oi-pencil"></span> Add An Author
+</a>
 
 @if (_model == null)
 {
@@ -15,7 +20,7 @@ else
 {
     <table class="table table-default">
         <thead>
-            <tr class="table-light">
+            <tr class="">
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Actions</th>
@@ -24,18 +29,21 @@ else
         <tbody>
         @foreach (var author in _model)
         {
-            <tr class="table-secondary">
+            <tr class="">
                 <td>@author.FirstName</td>
                 <td>@author.LastName</td>
                 <td>
                     <a href="/authors/details/@author.Id" class="btn btn-primary">
                         <span class="oi oi-book"></span>
+                        Details
                     </a>
                     <a href="/authors/update/@author.Id" class="btn btn-warning">
                         <span class="oi oi-pencil"></span>
+                        Update
                     </a>
                     <a href="/authors/delete/@author.Id" class="btn btn-danger">
                         <span class="oi oi-delete"></span>
+                        Delete
                     </a>
                 </td>
             </tr>
