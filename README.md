@@ -6,11 +6,13 @@
 
 ## Scope
 
-A full-stack web application to manage books and thier authors.
+A full-stack web application to manage books and their authors with clean architecture using C#/.Net Core and HTML.
 
 ### Architecture
 
-This application uses hexagonal/onion style architecture for separation of core functionality. The key projects are contained within the `Core`, `Infrastructure`, and `Api`projects with the client within the `UI`.
+This application uses hexagonal/onion style architecture for separation of core functionality and modularity to use or try out different technologies as it grows in scope. 
+
+The key projects are contained within the `Core`, `Infrastructure`, and `Api` projects with the client within the `UI` directory.
 
 ### Technologies
 
@@ -18,11 +20,26 @@ The application was built using:
 
 - ASP.Net Core 3.1
 - Blazor WebAssembly (WASM)
-- Entity Freamework Core
+- Entity Framework Core (Working on a Dapper alternative)
 - Bootstrap 4
 
 ### Tools
 
-Book Store uses Swagger from Swashbuckle for client resource testing, NLog for logging requrst from the Api and any additional errors.
+This application already contains Swagger documentation from the Swashbuckler package for client resource testing. Also, NLog for logging request from the Api and any additional errors that are saved as text documents for review.
 
-For database setup, for development it is recomended to use Sqlite, but PostgreSQL is also already setup for database configuration in the Infrastructure project.
+For database setup, it is recommended to use Sqlite for development and is currently an installed package with the application. Navigate to the Infrastructure project and find the `StoreContext.cs` class in the `Data` directory and find the method that configures which database to use
+
+```csharp
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    //optionsBuilder.UseNpgsql(_config.GetConnectionString("NpgsqlConString"));
+    //optionsBuilder.UseSqlServer(_config.GetConnectionString("sqlConString"));
+    optionsBuilder.UseSqlite(_config.GetConnectionString("sqlite"));
+}
+```
+
+PostgreSQL is also already setup for database configuration, just uncomment the line using the `UseNpgsql` and setup the connection string in the `application.Development.json` file in the `Api` project (the main startup). Then comment out other methods.
+
+### Future Features
+
+The Book Store does not yet contain login/logout, registration, and authentication, but will be needed once the project grows in scope to actually sell books online.
