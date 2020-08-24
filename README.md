@@ -2,6 +2,8 @@
 
 > A way to manage books as a web application using Blazor WASM
 
+![visitors](https://vistr.dev/badge?repo=johnmcraig.blazor-book-shop)
+
 ## Scope
 
 A full-stack web application to manage books and thier authors.
