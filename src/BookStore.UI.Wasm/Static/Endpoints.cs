@@ -4,6 +4,6 @@
     {
         private const string BaseUrl = "https://localhost:5001";
         public static readonly string AuthorsEndpoint = $"{BaseUrl}/api/authors/";
-        public static string BooksEndpoint = $"{BaseUrl}/api/books/";
+        public static readonly string BooksEndpoint = $"{BaseUrl}/api/books/";
     }
 }
