@@ -68,6 +68,7 @@ else
     <span class="oi oi-media-skip-backward"></span>
     Back to List
 </button>
+
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -78,7 +79,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //var id = Convert.ToInt32(Id);
         _model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
     }
 
@@ -87,8 +87,12 @@ else
         _isSuccessful = await _repo.Delete(Endpoints.BooksEndpoint, _model.Id);
         if (_isSuccessful)
         {
-            _toastService.ShowSuccess("Successfully delete book record.", "");
+            _toastService.ShowSuccess($"Successfully Deleted Book Record: {_model.Id} {_model.Title}");
             BackToList();
+        }
+        else
+        {
+            _toastService.ShowError("An Error Occurred During the Operation!");
         }
     }
     
@@ -96,5 +100,4 @@ else
     {
         _navManager.NavigateTo("/books/");
     }
-
 }

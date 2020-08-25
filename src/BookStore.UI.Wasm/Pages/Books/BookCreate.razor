@@ -24,6 +24,7 @@
         Back To List
     </button>
 </EditForm>
+
 @code {
     private Book _model = new Book();
     
@@ -32,8 +33,12 @@
         var response = await _repo.Create(Endpoints.BooksEndpoint, _model);
         if (response != null)
         {
-            _toastService.ShowInfo("Successfully created book record", "");
+            _toastService.ShowSuccess("Successfully created book record", "");
             BackToList();
+        }
+        else
+        {
+            _toastService.ShowError("An Error Occurred While Creating the Record!");
         }
     }
 

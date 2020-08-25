@@ -2,6 +2,7 @@
 
 @inject IBookRepository _repo
 @inject NavigationManager _navManager
+@inject IToastService _toastService
 
 <h3>Book Details</h3>
 @if (Model == null)
@@ -53,6 +54,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         Model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
+        _toastService.ShowSuccess($"Now Viewing {Model.Id} {Model.Title}");
     }
     
     private void BackToList()
