@@ -1,4 +1,4 @@
-# Blazor Book Store
+# Blazor Book Shop
 
 > A way to manage books as a web application using Blazor WASM
 
