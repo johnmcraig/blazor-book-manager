@@ -6,7 +6,7 @@
 @inject IToastService _toastService
 
 
-<h3>BookUpdate</h3>
+<h3>Update Book</h3>
 
 <EditForm Model="_model" OnValidSubmit="UpdateBook">
     
@@ -83,7 +83,6 @@
     
     protected  override async Task OnInitializedAsync()
     {
-        //var id = Convert.ToInt32(Id);
         _model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
         Authors = await _authorRepo.GetAll(Endpoints.AuthorsEndpoint);
     }
@@ -93,7 +92,7 @@
         _isSuccessful = await _repo.Update(Endpoints.BooksEndpoint, _model, _model.Id);
         if (_isSuccessful)
         {
-            _toastService.ShowSuccess("Successfully update book record");
+            _toastService.ShowSuccess($"Successfully Updated Book Record: {_model.Id} {_model.Title}");
             BackToList();
         }
     }
