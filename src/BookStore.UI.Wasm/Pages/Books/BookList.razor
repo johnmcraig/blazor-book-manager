@@ -10,15 +10,15 @@
 }
 else
 {
-    <table class="table table-default">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-striped">
         <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>Price</th>
-            <th>ISBN</th>
-            <th>Author</th>
-            <th>Options</th>
+            <th scope="col">Title</th>
+            <th scope="col">Year</th>
+            <th scope="col">Price</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Author</th>
+            <th scope="col">Options</th>
         </tr>
         </thead>
         <tbody>
@@ -67,7 +67,4 @@ else
     {
         _model = await _repo.GetAll(Endpoints.BooksEndpoint);
     }
-    
-    
-
 }
