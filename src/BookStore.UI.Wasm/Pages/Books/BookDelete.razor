@@ -11,7 +11,7 @@
     <ErrorMessage Message="Something Went Wrong With the Operation" />
 }
 
-@if (int.Parse(Id) < 1 || string.IsNullOrWhiteSpace(Id))
+@if (Id < 1 || string.IsNullOrWhiteSpace(_model.Title))
 {
     <ErrorMessage Message="Invalid Selection. Please Try Again" />
 }
