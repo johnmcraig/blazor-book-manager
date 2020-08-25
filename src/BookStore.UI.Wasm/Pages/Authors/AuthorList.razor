@@ -1,15 +1,15 @@
 ﻿@page "/authors"
 
 @inject IAuthorRepository _repo
-@inject HttpClient _client
 @inject NavigationManager _navManager
 
 <h3>Authors List</h3>
 
 <br />
 
-<a href="/authors/create/" class="btn btn-primary p-1 m-2">
-    <span class="oi oi-pencil"></span> Add An Author
+<a href="/authors/create/" class="btn btn-primary py-2">
+    <span class="oi oi-pencil"></span> 
+    Add An Author
 </a>
 
 @if (_model == null)
@@ -18,21 +18,21 @@
 }
 else
 {
-    <table class="table table-default">
-        <thead>
-            <tr class="">
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Actions</th>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
         @foreach (var author in _model)
         {
-            <tr class="">
-                <td>@author.FirstName</td>
-                <td>@author.LastName</td>
-                <td>
+            <tr>
+                <td scope="row">@author.FirstName</td>
+                <td scope="row">@author.LastName</td>
+                <td scope="row">
                     <a href="/authors/details/@author.Id" class="btn btn-primary">
                         <span class="oi oi-book"></span>
                         Details
