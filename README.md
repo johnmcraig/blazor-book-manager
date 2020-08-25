@@ -9,7 +9,7 @@
 
 ## Scope
 
-A full-stack web application to manage books and their authors with clean architecture using C#/.Net Core and HTML.
+A full-stack web application to manage books and their authors with clean architecture using C#/.Net Core, Blazor, HTML, and CSS.
 
 ### Architecture
 
