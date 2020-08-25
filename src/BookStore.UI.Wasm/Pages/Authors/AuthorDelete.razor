@@ -82,7 +82,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //var id = Convert.ToInt32(Id);
         Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, Id);
     }
 
@@ -92,8 +91,12 @@ else
 
         if (_isSuccessful)
         {
-            _toastService.ShowError("Author Deleted Successfully", "");
+            _toastService.ShowSuccess("Author Deleted Successfully");
             BackToList();
+        }
+        else
+        {
+            _toastService.ShowError("Error attempting record deletion");
         }
     }
 

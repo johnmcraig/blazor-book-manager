@@ -2,6 +2,7 @@
 
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
+@inject IToastService _toastService
 
 
 <h3>Update Current Author</h3>
@@ -60,7 +61,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //var id = Convert.ToInt32(Id);
         Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, Id);
     }
 
@@ -70,11 +70,13 @@ else
 
         if(_isSuccessful)
         {
+            _toastService.ShowSuccess($"Successfully Update Author: {Model.FirstName} {Model.LastName}");
             BackToList();
         }
         else
         {
             _isSuccessful = false;
+            _toastService.ShowError("An error occurred while updating the record!");
         }
     }
 

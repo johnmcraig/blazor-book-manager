@@ -48,7 +48,7 @@
         var response = await _repo.Create(Endpoints.AuthorsEndpoint, Model);
         if (response != null)
         {
-            _taostService.ShowInfo("Author created successfully");
+            _taostService.ShowSuccess("Author created successfully");
             BackToList();
         }
     }
