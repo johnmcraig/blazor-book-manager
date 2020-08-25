@@ -1,4 +1,4 @@
-﻿@page "/authors/delete/{Id}"
+﻿@page "/authors/delete/{Id:int}"
 
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
@@ -11,13 +11,13 @@
     <ErrorMessage Message="Something Went Wrong With the Operation" />
 }
 
-@if (int.Parse(Id) < 1 || string.IsNullOrWhiteSpace(Id))
+@if (Id < 1 || string.IsNullOrWhiteSpace(Model.FirstName))
 {
     <ErrorMessage Message="Invalid Selection. Please Try Again" />
 }
 else if (Model == null)
 {
-    <LoadingPrompt Message="Loading Author Details" />
+    <LoadingPrompt Message="Loading Author Details..." />
 }
 else
 {
@@ -74,7 +74,7 @@ else
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     private Author Model = new Author();
     
@@ -82,8 +82,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var id = Convert.ToInt32(Id);
-        Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, id);
+        //var id = Convert.ToInt32(Id);
+        Model = await _repo.GetSingle(Endpoints.AuthorsEndpoint, Id);
     }
 
     private async Task DeleteAuthor()

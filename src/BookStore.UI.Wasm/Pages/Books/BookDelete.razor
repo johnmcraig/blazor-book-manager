@@ -1,4 +1,4 @@
-﻿@page "/books/delete/{Id}"
+﻿@page "/books/delete/{Id:int}"
 
 @inject IBookRepository _repo
 @inject NavigationManager _navManager
@@ -70,7 +70,7 @@ else
 </button>
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
     
     private Book _model = new Book();
 
@@ -78,8 +78,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var id = Convert.ToInt32(Id);
-        _model = await _repo.GetSingle(Endpoints.BooksEndpoint, id);
+        //var id = Convert.ToInt32(Id);
+        _model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
     }
 
     private async Task DeleteBook()
