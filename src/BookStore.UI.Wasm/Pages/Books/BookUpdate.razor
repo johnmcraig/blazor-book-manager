@@ -24,15 +24,15 @@
     </div>
     <div class="form-group">
         <label for="price">Price</label>
-        <InputNumber @bind-Value="_model.Price" class="form-control" id="price"/>
+        <InputNumber @bind-Value="@_model.Price" class="form-control" id="price"/>
     </div>
     <div class="form-group">
         <label for="author">Authors</label>
         <select @bind="_model.AuthorId" class="form-control" id="author">
             <option value="">-- Select Author --</option>
-            @if (Authors != null)
+            @if (_authors != null)
             {
-                foreach (var author in Authors)
+                foreach (var author in _authors)
                 {
                     <option value="@author.Id">@author.FirstName @author.LastName</option>
                 }
@@ -76,15 +76,15 @@
     public int Id { get; set; }
     
     private Book _model = new Book();
-    private IList<Author> Authors;
-    private IFileListEntry file;
+    private IList<Author> _authors;
+    private IFileListEntry _file;
 
     private bool _isSuccessful = true;
     
     protected  override async Task OnInitializedAsync()
     {
         _model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
-        Authors = await _authorRepo.GetAll(Endpoints.AuthorsEndpoint);
+        _authors = await _authorRepo.GetAll(Endpoints.AuthorsEndpoint);
     }
 
     private async Task UpdateBook()
