@@ -11,8 +11,7 @@
 {
     <ErrorMessage Message="Error! Something went wrong with the current operation." />
 }
-
-@if (Model == null)
+else if (Model == null)
 {
     <LoadingPrompt Message="Loading Author Data for Updating..." />
 }
