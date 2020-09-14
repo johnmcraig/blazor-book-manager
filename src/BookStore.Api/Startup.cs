@@ -29,13 +29,12 @@ namespace BookStore.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
+            
             services.AddSwaggerDocumentation();
             
-            services.AddControllersWithViews().AddNewtonsoftJson(opt => {
+            services.AddControllers().AddNewtonsoftJson(opt => {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-
-            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -66,7 +65,6 @@ namespace BookStore.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
