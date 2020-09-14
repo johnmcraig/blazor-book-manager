@@ -5,6 +5,10 @@
 @inject IToastService _toastService
 
 <h3>Create Book</h3>
+@if(!_isSuccessful)
+{
+    <ErrorMessage Message="An error occurred during the operation" />
+}
 
 <EditForm Model="_model" OnValidSubmit="CreateBook">
     
@@ -12,7 +16,30 @@
     
     <ValidationSummary/>
     
-    
+    <div class="form-group">
+        <label for="Title">Book Title</label>
+        <InputText @bind-Value="_model.Title" class="form-control" id="Title" />
+    </div>
+
+    <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <InputText @bind-Value="_model.Isbn" class="form-control" id="isbn" />
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <InputNumber @bind-Value="_model.Price" class="form-control" id="price" />
+    </div>
+
+    <div class="form-group">
+        <label for="year">Year</label>
+        <InputDate @bind-Value="_model.Year" class="form-control" id="year" />
+    </div>
+
+    <div class="form-group">
+        <label for="summary">Summary</label>
+        <InputTextArea @bind-Value="_model.Summary" class="form-control" id="summary" />
+    </div>
     
     <button @onclick="CreateBook" class="ntn btn-success">
         <span class="oi oi-pencil"></span>
@@ -25,8 +52,11 @@
     </button>
 </EditForm>
 
+
 @code {
     private Book _model = new Book();
+    private IList<Author> Authors;
+    private bool _isSuccessful = true;
     
     private async Task CreateBook()
     {
@@ -38,6 +68,7 @@
         }
         else
         {
+            _isSuccessful = false;
             _toastService.ShowError("An Error Occurred While Creating the Record!");
         }
     }
