@@ -70,7 +70,7 @@ namespace BookStore.Infrastructure.Data
                         AuthorId = 2,
                         Title = "A Trip Outside",
                         Year = 2015,
-                        Summary = "Light hearted fun in the sun",
+                        Summary = "Lighthearted fun in the sun",
                         Isbn = "TEST-4444-45BN",
                         Price = 39.99m
                     }

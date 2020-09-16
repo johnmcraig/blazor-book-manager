@@ -4,6 +4,13 @@
 
 <h3>Book List</h3>
 
+<br />
+
+<a href="/books/create/" class="btn btn-primary p-2 m-2">
+    <span class="oi oi-pencil"></span>
+    Add A Book
+</a>
+
 @if (_model == null)
 {
     <LoadingPrompt Message="Loading Book list" />
@@ -12,50 +19,52 @@ else
 {
     <table class="table table-striped">
         <thead class="thead-dark">
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Year</th>
-            <th scope="col">Price</th>
-            <th scope="col">ISBN</th>
-            <th scope="col">Author</th>
-            <th scope="col">Actions</th>
-        </tr>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Year</th>
+                <th scope="col">Price</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Author</th>
+                <th scope="col">Actions</th>
+            </tr>
         </thead>
         <tbody>
-         @foreach (var book in _model)
-         {
-             <tr>
-                 <td>@book.Title</td>
-                 <td>@book.Year</td>
-                 <td>@($"{book.Price:C}")</td>
-                 <td>@book.Isbn</td>
-                 <td>
-                     @if (book.Author == null)
-                     {
-                         <span class="text-muted">No Author Recorded</span>
-                     }
-                     else
-                     {
-                        <span> @book.Author.FirstName 
-                         @book.Author.LastName </span>
-                     }
-                 </td>
-                 <td>
-                     <a href="/books/details/@book.Id" class="btn btn-primary">
-                         <span class="oi oi-book"></span>
-                         Details
-                     </a>
-                     <a href="/books/update/@book.Id" class="btn btn-warning">
-                         <span class="oi oi-pencil"></span>
-                         Update
-                     </a>
-                     <a href="/books/delete/@book.Id" class="btn btn-danger">
-                         <span class="oi oi-delete"></span>
-                         Delete
-                     </a>
-                 </td>
-             </tr>
-         }
+            @foreach (var book in _model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Year</td>
+                    <td>@($"{book.Price:C}")</td>
+                    <td>@book.Isbn</td>
+                    <td>
+                        @if (book.Author == null)
+                        {
+                            <span class="text-muted">No Author Recorded</span>
+                        }
+                        else
+                        {
+                            <span>
+                                @book.Author.FirstName
+                                @book.Author.LastName
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/books/details/@book.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                            Details
+                        </a>
+                        <a href="/books/update/@book.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                            Update
+                        </a>
+                        <a href="/books/delete/@book.Id" class="btn btn-danger">
+                            <span class="oi oi-delete"></span>
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 }

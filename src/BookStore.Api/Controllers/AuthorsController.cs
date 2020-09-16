@@ -37,7 +37,7 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation("Attempting to get all authors...");
 
-                    //var authors = await _unitOfWork.Repository<Author>().FindAll();
+                    // var authors = await _unitOfWork.Repository<Author>().FindAll();
                     var authors = await _authorRepo.FindAll();
 
                     _logger.LogInformation("Successfully got all Authors");
@@ -79,7 +79,7 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single record with id:{id}");
 
-                //var author = await _unitOfWork.Repository<Author>().FindById(id);
+                // var author = await _unitOfWork.Repository<Author>().FindById(id);
                 var author = await _authorRepo.FindById(id);
 
                 if (author == null)
@@ -130,7 +130,7 @@ namespace BookStore.Api.Controllers
 
                 }
 
-                //var isSuccess = await _unitOfWork.Repository<Author>().Create(author);
+                // var isSuccess = await _unitOfWork.Repository<Author>().Create(author);
                 var isSuccess = await _authorRepo.Create(author);
 
                 if (!isSuccess)
@@ -188,7 +188,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                //var isSuccess = await _unitOfWork.Repository<Author>().Update(authorToUpdate);
+                // var isSuccess = await _unitOfWork.Repository<Author>().Update(authorToUpdate);
                 var isSuccess = await _authorRepo.Update(authorToUpdate);
 
                 if (!isSuccess)
@@ -228,7 +228,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                //var author = await _unitOfWork.Repository<Author>().FindById(id);
+                // var author = await _unitOfWork.Repository<Author>().FindById(id);
                 var author = await _authorRepo.FindById(id);
 
                 if (author == null)
@@ -237,8 +237,8 @@ namespace BookStore.Api.Controllers
                     return NotFound();
                 }
 
-                //var isSuccess = await _unitOfWork.Repository<Author>().Delete(author);
-                var isSuccess = await _authorRepo.Delete(author);
+                // var isSuccess = await _unitOfWork.Repository<Author>().Delete(author);
+                 var isSuccess = await _authorRepo.Delete(author);
 
                 if (!isSuccess)
                 {

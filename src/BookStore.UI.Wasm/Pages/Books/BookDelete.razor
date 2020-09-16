@@ -87,7 +87,7 @@ else
         _isSuccessful = await _repo.Delete(Endpoints.BooksEndpoint, _model.Id);
         if (_isSuccessful)
         {
-            _toastService.ShowSuccess($"Successfully Deleted Book Record: {_model.Id} {_model.Title}");
+            _toastService.ShowSuccess($"Successfully Deleted Book Record: Id:{_model.Id} Title:{_model.Title}");
             BackToList();
         }
         else

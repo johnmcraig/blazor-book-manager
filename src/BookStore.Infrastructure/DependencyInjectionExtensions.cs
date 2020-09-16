@@ -5,7 +5,7 @@ using BookStore.Infrastructure.DataAccess;
 
 namespace BookStore.Infrastructure
 {
-    public static class DependencyInjectionContainer
+    public static class DependencyInjectionExtensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
