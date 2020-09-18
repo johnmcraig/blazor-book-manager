@@ -19,14 +19,17 @@ namespace BookStore.Infrastructure.Data
     {
         private readonly ISqlDataAccess _sqliteData;
         private readonly ILogger<AuthorSqlRepository> _logger;
+        private readonly IConfiguration _config;
         private readonly string connectionString = "sqlite";
         private readonly IDbConnection _cnn;
 
-        public AuthorSqlRepository(ISqlDataAccess sqliteData, ILogger<AuthorSqlRepository> logger, IConfiguration configuration)
+        public AuthorSqlRepository(ISqlDataAccess sqliteData, 
+        ILogger<AuthorSqlRepository> logger, 
+        IConfiguration config)
         {
             _sqliteData = sqliteData;
             _logger = logger;
-            _cnn = new SqliteConnection(configuration.GetConnectionString(connectionString));
+            _config = config;
         }
 
         public async Task<bool> Create(Author entity)
@@ -74,21 +77,23 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = @"SELECT a.*, b.* FROM Authors AS a INNER JOIN Books AS b ON a.Id = b.AuthorId";
+            string sql = @"SELECT a.*, b.Title, b.Price FROM Authors AS a LEFT JOIN Books AS b ON a.Id = b.AuthorId";
             
             try
             {
                 var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
                 return authors.ToList();
 
-                //    var authorList = await _sqliteData.LoadData<Author, Book, Author>(sql, (authors, books) =>
-                //    {
-                //        authors.Books ??= books;      
-                //        return authors;
-                //    }); 
+                // using(var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
+                // {
+                //     var authorList = await connection.QueryAsync<Author, Book, Author>(sql, (a, b) =>
+                //     {
+                //         a.Books = (IList<Book>)b;      
+                //         return a;
+                //     }, splitOn: "Title");
 
-                //    return authorList.Distinct().ToList();
-                //}
+                //     return authorList.ToList();
+                // }
             }
             catch (Exception ex)
             {
