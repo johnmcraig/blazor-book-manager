@@ -78,8 +78,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Book>> FindAll()
         {
-            string sql = "SELECT * FROM Books; SELECT * FROM Authors;";
-
+            string sql = "SELECT books.*, author.* FROM Books AS books " +
+                            "LEFT JOIN Authors AS author ON books.AuthorId = author.Id";
             try
             {
                 using (var connection = new SqliteConnection(_config
@@ -87,17 +87,15 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    using (var multi = await connection.QueryMultipleAsync(sql))
-                    {
-                        var books = multi.Read<Book>().ToList();
-                        var author = multi.Read<Author>().First();
-                        foreach (var book in books)
+                    var bookResults = await connection
+                        .QueryAsync<Book, Author, Book>(sql, 
+                            (books, author) =>
                         {
-                            book.Author = author;
-                        }
+                            books.Author = author;
+                            return books;
+                        }, splitOn: "AuthorId");
 
-                        return books;
-                    }
+                    return bookResults.ToList();
                 }
             }
             catch (Exception ex)
