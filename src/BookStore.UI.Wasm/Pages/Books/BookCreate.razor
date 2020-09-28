@@ -1,6 +1,7 @@
 ﻿@page "/books/create/"
 
 @inject IBookRepository _repo
+@inject IAuthorRepository _authorRepo
 @inject NavigationManager _navManager
 @inject IToastService _toastService
 
@@ -17,7 +18,7 @@
     <ValidationSummary/>
     
     <div class="form-group">
-        <label for="Title">Book Title</label>
+        <label for="Title">Title</label>
         <InputText @bind-Value="_model.Title" class="form-control" id="Title" />
     </div>
 
@@ -33,7 +34,21 @@
 
     <div class="form-group">
         <label for="year">Year</label>
-        <InputDate @bind-Value="_model.Year" class="form-control" id="year" />
+        <InputNumber @bind-Value="_model.Year" class="form-control" id="year" />
+    </div>
+
+    <div class="form-group">
+        <label for="author">Authors</label>
+        <select @bind="_model.AuthorId" class="form-control" id="author">
+            <option value="">-- Select Author --</option>
+            @if (_authors != null)
+            {
+                foreach (var author in _authors)
+                {
+                    <option value="@author.Id">@author.FirstName @author.LastName</option>
+                }
+            }
+        </select>
     </div>
 
     <div class="form-group">
@@ -55,8 +70,13 @@
 
 @code {
     private Book _model = new Book();
-    private IList<Author> Authors;
+    private IList<Author> _authors;
     private bool _isSuccessful = true;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _authors = await _authorRepo.GetAll(Endpoints.AuthorsEndpoint);
+    }
     
     private async Task CreateBook()
     {
