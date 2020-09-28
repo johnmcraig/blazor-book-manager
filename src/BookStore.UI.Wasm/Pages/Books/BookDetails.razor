@@ -31,8 +31,8 @@ else
                 <td>@($"{Model.Price:C}")</td>
             </tr>
             <tr>
-                <td>Author</td>
-                <td>@Model.Author</td>
+                <td>Author ID</td>
+                <td>@Model.AuthorId</td>
             </tr>
         </table>
     </div>
@@ -59,7 +59,7 @@ else
     public int Id { get; set; }
 
     private Book Model = new Book();
-    
+
     protected override async Task OnInitializedAsync()
     {
         Model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
