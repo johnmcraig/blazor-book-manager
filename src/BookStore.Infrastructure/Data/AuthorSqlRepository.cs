@@ -1,17 +1,17 @@
-﻿using BookStore.Core.Entities;
-using BookStore.Core.Interfaces;
-using BookStore.Infrastructure.DataAccess;
-using Dapper;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookStore.Core.Entities;
+using BookStore.Core.Interfaces;
+using BookStore.Infrastructure.DataAccess;
+using Dapper;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BookStore.Infrastructure.Data
 {
@@ -21,11 +21,10 @@ namespace BookStore.Infrastructure.Data
         private readonly ILogger<AuthorSqlRepository> _logger;
         private readonly IConfiguration _config;
         private readonly string connectionString = "sqlite";
-        private readonly IDbConnection _cnn;
 
-        public AuthorSqlRepository(ISqlDataAccess sqliteData, 
-        ILogger<AuthorSqlRepository> logger, 
-        IConfiguration config)
+        public AuthorSqlRepository(ISqlDataAccess sqliteData,
+            ILogger<AuthorSqlRepository> logger,
+            IConfiguration config)
         {
             _sqliteData = sqliteData;
             _logger = logger;
@@ -63,7 +62,10 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                await _sqliteData.SaveData(sql, new { entity.Id }, connectionString);
+                await _sqliteData.SaveData(sql, new
+                {
+                    entity.Id
+                }, connectionString);
 
                 return true;
             }
@@ -72,28 +74,32 @@ namespace BookStore.Infrastructure.Data
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
 
                 return false;
-            }           
+            }
         }
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = @"SELECT a.*, b.Title, b.Price FROM Authors AS a LEFT JOIN Books AS b ON a.Id = b.AuthorId";
-            
+            var query = @"SELECT * FROM Authors; SELECT * FROM Books;";
+
             try
             {
-                var authors = await _sqliteData.LoadData<Author, dynamic>(sql, new { }, connectionString);
-                return authors.ToList();
+                using (var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
+                {
+                    connection.Open();
 
-                // using(var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
-                // {
-                //     var authorList = await connection.QueryAsync<Author, Book, Author>(sql, (a, b) =>
-                //     {
-                //         a.Books = (IList<Book>)b;      
-                //         return a;
-                //     }, splitOn: "Title");
+                    using(var multi = await connection.QueryMultipleAsync(query))
+                    {
+                        var authors = multi.Read<Author>().ToList();
+                        var books = multi.Read<Book>().ToList();
+                        foreach (var author in authors)
+                        {
+                            author.Books = books;
+                        }
+                        return authors;
+                    }
 
-                //     return authorList.ToList();
-                // }
+                }
             }
             catch (Exception ex)
             {
@@ -101,17 +107,21 @@ namespace BookStore.Infrastructure.Data
 
                 return null;
             }
-            
+
         }
 
         public async Task<IList<Author>> FindBySearch(string search)
         {
-            string sql = @"SELECT * FROM Authors WHERE FirstName LIKE @Search UNION 
-                            SELECT * FROM Authors WHERE LastName LIKE @Search";
+            string sql = @"SELECT * FROM Authors WHERE FirstName LIKE @Search UNION " + 
+                            "SELECT * FROM Authors WHERE LastName LIKE @Search";
 
             try
             {
-                var results = await _sqliteData.LoadData<Author, dynamic>(sql, new {Search = "%" + search + "%"}, connectionString);
+                var results = await _sqliteData.LoadData<Author, dynamic>(sql, 
+                    new
+                    {
+                        Search = "%" + search + "%"
+                    }, connectionString);
 
                 return results.ToList();
             }
@@ -125,13 +135,29 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            string sql = @"SELECT * FROM Authors Where Id = @Id";
+            var query = @"SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books";
 
             try
             {
-                var author = await _sqliteData.LoadData<Author, dynamic>(sql, new { Id = id }, connectionString);
+                using (var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
+                {
+                    connection.Open();
 
-                return author.FirstOrDefault();
+                    using (var multi = await connection.QueryMultipleAsync(query, 
+                        new {
+                        Id = id
+                    }))
+                    {
+                        var author = multi.Read<Author>().FirstOrDefault();
+                        var books = multi.Read<Book>().ToList();
+                        if (author != null)
+                        {
+                            author.Books = books;
+                        }
+                        return author;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -148,7 +174,6 @@ namespace BookStore.Infrastructure.Data
             try
             {
                 await _sqliteData.SaveData(sql, entity, connectionString);
-
                 return true;
             }
             catch (Exception ex)
@@ -156,13 +181,14 @@ namespace BookStore.Infrastructure.Data
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
 
                 return false;
-            }    
+            }
         }
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors WHERE Id = @Id) 
-                            THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
+            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors " +
+                         "WHERE Id = @Id)" +
+                         "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
             {
@@ -170,7 +196,10 @@ namespace BookStore.Infrastructure.Data
 
                 connection.Open();
 
-                var isExists = await connection.QueryFirstAsync<bool>(sql, new { Id = id });
+                var isExists = await connection.QueryFirstAsync<bool>(sql, new
+                {
+                    Id = id
+                });
 
                 return isExists;
             }
