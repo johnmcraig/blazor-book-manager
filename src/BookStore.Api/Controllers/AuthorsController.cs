@@ -174,14 +174,14 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                var ifExists = await _authorRepo.IsExists(id);
-
-                if(ifExists == false)
-                {
-                    _logger.LogWarning($"{location}: Record with id:{id} was not found");
-
-                    return NotFound();
-                }
+                // var ifExists = await _authorRepo.IsExists(id);
+                //
+                // if(ifExists == false)
+                // {
+                //     _logger.LogWarning($"{location}: Record with id: {id} was not found");
+                //
+                //     return NotFound();
+                // }
 
                 if(!ModelState.IsValid)
                 {
@@ -233,7 +233,7 @@ namespace BookStore.Api.Controllers
 
                 if (author == null)
                 {
-                    _logger.LogWarning($"{location}: Record with id:{id} was not found");
+                    _logger.LogWarning($"{location}: Record with id: {id} was not found");
                     return NotFound();
                 }
 
