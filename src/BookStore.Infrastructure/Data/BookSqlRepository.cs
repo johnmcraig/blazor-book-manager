@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace BookStore.Infrastructure.Data
 {
@@ -16,17 +17,21 @@ namespace BookStore.Infrastructure.Data
         private readonly ISqlDataAccess _sqliteData;
         private readonly ILogger<BookSqlRepository> _logger;
         private readonly string connectionString = "sqlite";
+        private readonly IConfiguration _config;
 
-        public BookSqlRepository(ISqlDataAccess sqliteData, ILogger<BookSqlRepository> logger)
+        public BookSqlRepository(ISqlDataAccess sqliteData,
+            ILogger<BookSqlRepository> logger,
+            IConfiguration config)
         {
             _sqliteData = sqliteData;
             _logger = logger;
+            _config = config;
         }
 
         public async Task<bool> Create(Book entity)
         {
             string sql = "INSERT INTO Books (Title, Year, Summary, Isbn, Price, Image, AuthorId) VALUES " +
-                "(@Title, @Year, @Summary, @Isbn, @Price, @Image, @AuthorId);";
+                         "(@Title, @Year, @Summary, @Isbn, @Price, @Image, @AuthorId);";
 
             try
             {
@@ -59,7 +64,7 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                await _sqliteData.SaveData(sql, new { entity.Id }, connectionString);
+                await _sqliteData.SaveData(sql, new {entity.Id}, connectionString);
 
                 return true;
             }
@@ -73,13 +78,27 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Book>> FindAll()
         {
-            string sql = "SELECT * FROM Books";
+            string sql = "SELECT * FROM Books; SELECT * FROM Authors;";
 
             try
             {
-                var books = await _sqliteData.LoadData<Book, dynamic>(sql, new { }, connectionString);
+                using (var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
+                {
+                    connection.Open();
 
-                return books.ToList();
+                    using (var multi = await connection.QueryMultipleAsync(sql))
+                    {
+                        var books = multi.Read<Book>().ToList();
+                        var author = multi.Read<Author>().First();
+                        foreach (var book in books)
+                        {
+                            book.Author = author;
+                        }
+
+                        return books;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -87,7 +106,6 @@ namespace BookStore.Infrastructure.Data
 
                 return null;
             }
-
         }
 
         public async Task<IList<Book>> FindBySearch(string search)
@@ -97,7 +115,8 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                var results = await _sqliteData.LoadData<Book, dynamic>(sql, new { Search = "%" + search + "%" }, connectionString);
+                var results =
+                    await _sqliteData.LoadData<Book, dynamic>(sql, new {Search = "%" + search + "%"}, connectionString);
 
                 return results.ToList();
             }
@@ -115,7 +134,8 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                var book = await _sqliteData.LoadData<Book, dynamic>(sql, new { Id = id }, connectionString);
+                var book = await _sqliteData.LoadData<Book, dynamic>
+                                    (sql, new {Id = id}, connectionString);
 
                 return book.FirstOrDefault();
             }
@@ -130,7 +150,7 @@ namespace BookStore.Infrastructure.Data
         public async Task<bool> Update(Book entity)
         {
             string sql = "UPDATE Books SET Title = @Title, Summary = @Summary, Isbn = @Isbn, Year = @Year," +
-                " Image = @Image, Price = @Price WHERE Id = @Id";
+                         " Image = @Image, Price = @Price WHERE Id = @Id";
 
             try
             {
@@ -149,8 +169,8 @@ namespace BookStore.Infrastructure.Data
         public async Task<bool> IsExists(int id)
         {
             string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Books " +
-                "WHERE Id = @Id)" +
-                "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
+                         "WHERE Id = @Id)" +
+                         "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
             {
@@ -158,7 +178,7 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    var isExists = await connection.QueryFirstAsync<bool>(sql, new { Id = id });
+                    var isExists = await connection.QueryFirstAsync<bool>(sql, new {Id = id});
 
                     return isExists;
                 }
