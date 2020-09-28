@@ -18,14 +18,22 @@
         <label for="title">Title</label>
         <InputText @bind-Value="@_model.Title" class="form-control" id="title"/>
     </div>
+    
     <div class="form-group">
         <label for="isbn">ISBN</label>
         <InputText @bind-Value="@_model.Isbn" class="form-control" id="isbn"/>
     </div>
+    
     <div class="form-group">
         <label for="price">Price</label>
         <InputNumber @bind-Value="@_model.Price" class="form-control" id="price"/>
     </div>
+    
+    <div class="form-group">
+        <label for="year">Year</label>
+        <InputNumber @bind-Value="_model.Year" class="form-control" id="year"/>
+    </div>
+    
     <div class="form-group">
         <label for="author">Authors</label>
         <select @bind="_model.AuthorId" class="form-control" id="author">
@@ -39,10 +47,12 @@
             }
         </select>
     </div>
+    
     <div class="form-group">
         <label for="summary">Summary</label>
         <InputTextArea @bind-Value="_model.Summary" class="form-control" id="summary"/>
     </div>
+    
 @*     <div class="form-group"> *@
 @*         <label for="bookcover">Book Cover Photo</label> *@
 @*         <InputFile OnChange="HandleFileSelection"/> *@
