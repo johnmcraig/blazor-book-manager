@@ -31,8 +31,8 @@ else
                 <td>@($"{Model.Price:C}")</td>
             </tr>
             <tr>
-                <td>Author ID</td>
-                <td>@Model.AuthorId</td>
+                <td>Author</td>
+                <td>@Model.Author?.FullName</td>
             </tr>
         </table>
     </div>
@@ -65,7 +65,7 @@ else
         Model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
         _toastService.ShowSuccess($"Now Viewing {Model.Id} {Model.Title}");
     }
-    
+
     private void BackToList()
     {
         _navManager.NavigateTo("/books/");
