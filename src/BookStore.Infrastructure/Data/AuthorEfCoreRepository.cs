@@ -1,9 +1,7 @@
 ﻿using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
