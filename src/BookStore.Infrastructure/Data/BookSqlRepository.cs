@@ -128,12 +128,14 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Book> FindById(int id)
         {
-            string sql = "SELECT * FROM Books Where Id = @Id";
+            string sql = "SELECT * FROM Books WHERE Id = @Id";
 
             try
             {
-                var book = await _sqliteData.LoadData<Book, dynamic>
-                                    (sql, new {Id = id}, connectionString);
+                var book = await _sqliteData.LoadData<Book, dynamic>(sql, new
+                {
+                    Id = id
+                },connectionString);
 
                 return book.FirstOrDefault();
             }
