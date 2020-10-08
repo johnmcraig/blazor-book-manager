@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
@@ -79,7 +78,7 @@ namespace BookStore.Infrastructure.Data
         public async Task<IList<Book>> FindAll()
         {
             string sql = "SELECT books.*, author.* FROM Books AS books " +
-                            "LEFT JOIN Authors AS author ON books.AuthorId = author.Id";
+                         "LEFT JOIN Authors AS author ON books.AuthorId = author.Id";
             try
             {
                 using (var connection = new SqliteConnection(_config
@@ -128,16 +127,28 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Book> FindById(int id)
         {
-            string sql = "SELECT * FROM Books WHERE Id = @Id";
+            string sql = "SELECT b.Id, b.AuthorId, b.Title, b.Price, b.Year, b.Isbn, b.Summary, " +
+                         "a.Id, a.FirstName, a.LastName FROM Books AS b " +
+                         "INNER JOIN Authors AS a ON b.AuthorId = a.Id WHERE b.Id = @Id";
 
             try
             {
-                var book = await _sqliteData.LoadData<Book, dynamic>(sql, new
+                using(var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
                 {
-                    Id = id
-                },connectionString);
+                    connection.Open();
 
-                return book.FirstOrDefault();
+                    var book = await connection.QueryAsync<Book, Author, Book>(sql, (book, author) => 
+                    {
+                        book.Author = author;
+                        return book;
+                    },
+                    new
+                    {
+                        @Id = id
+                    }, splitOn: "Id");
+
+                    return book.FirstOrDefault();
+                }
             }
             catch (Exception ex)
             {
@@ -168,7 +179,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Books " +
+            string sql = "SELECT CASE WHEN EXISTS (SELECT Id FROM Books " +
                          "WHERE Id = @Id)" +
                          "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
@@ -178,7 +189,11 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    var isExists = await connection.QueryFirstAsync<bool>(sql, new {Id = id});
+                    var isExists = await connection.QueryFirstAsync<bool>(sql, 
+                        new 
+                        { 
+                            @Id = id
+                        });
 
                     return isExists;
                 }
