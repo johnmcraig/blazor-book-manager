@@ -12,8 +12,8 @@ namespace BookStore.Infrastructure
             services.AddScoped<ISqlDataAccess, SqliteDataAccess>();
             services.AddDbContext<StoreContext>();
 
-            services.AddScoped<IBookRepository, BookEfCoreRepository>();
-            services.AddScoped<IAuthorRepository, AuthorEfCoreRepository>();
+            services.AddScoped<IBookRepository, BookSqlRepository>();
+            services.AddScoped<IAuthorRepository, AuthorSqlRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
