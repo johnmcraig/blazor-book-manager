@@ -135,8 +135,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            var query = @"SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books";
-
+            var query = "SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books WHERE AuthorId = @Id;";
+                        
             try
             {
                 using (var connection = new SqliteConnection(_config
@@ -144,10 +144,11 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    using (var multi = await connection.QueryMultipleAsync(query, 
-                        new {
-                        Id = id
-                    }))
+                    using (var multi = await connection.QueryMultipleAsync(query,
+                        new
+                        {
+                            @Id = id
+                        }))
                     {
                         var author = multi.Read<Author>().FirstOrDefault();
                         var books = multi.Read<Book>().ToList();
@@ -198,7 +199,7 @@ namespace BookStore.Infrastructure.Data
 
                 var isExists = await connection.QueryFirstAsync<bool>(sql, new
                 {
-                    Id = id
+                    @Id = id
                 });
 
                 return isExists;
