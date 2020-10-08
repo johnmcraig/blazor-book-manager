@@ -174,16 +174,16 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                // var ifExists = await _authorRepo.IsExists(id);
-                //
-                // if(ifExists == false)
-                // {
-                //     _logger.LogWarning($"{location}: Record with id: {id} was not found");
-                //
-                //     return NotFound();
-                // }
+                var ifExists = await _authorRepo.IsExists(id);
 
-                if(!ModelState.IsValid)
+                if (ifExists == false)
+                {
+                    _logger.LogWarning($"{location}: Record with id: {id} was not found");
+
+                    return NotFound();
+                }
+
+                if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
@@ -259,6 +259,7 @@ namespace BookStore.Api.Controllers
 
             return StatusCode(500, "Something went wrong. Please contact the Administrator."); 
         }
+
         private string GetControllerActionNames()
         {
             var controller = ControllerContext.ActionDescriptor.ControllerName;
