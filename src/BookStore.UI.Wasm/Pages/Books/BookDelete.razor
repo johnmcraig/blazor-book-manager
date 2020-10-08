@@ -17,7 +17,7 @@
 }
 else if (_model == null)
 {
-    <LoadingPrompt Message="Loading Author Details" />
+    <LoadingPrompt Message="Loading Book Details" />
 }
 else
 {
@@ -35,26 +35,20 @@ else
                 <td>ISBN</td>
                 <td>@_model.Isbn</td>
             </tr>
+            <tr>
+                @if (_model.Author == null)
+                {
+                    <p class="alert alert-dismissible alert-secondary">
+                        No Authors for this record
+                    </p>
+                }
+                else
+                {
+                    <td>Author</td>
+                    <td>@_model.Author</td>
+                }
+                </tr> 
         </table>
-        <br/>
-        @if (_model.Author == null)
-        {
-            <div class="alert alert-dismissible alert-secondary">
-                No Authors for this record
-            </div>
-        }
-        else
-        {
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    <h4>Author</h4>
-                </div>
-                <ul class="list-group list-group-flush">
-                    
-                </ul>
-            </div>
-        }
-
     </div>
 }
 <br/>
