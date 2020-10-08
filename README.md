@@ -22,13 +22,13 @@ The key projects are contained within the `Core`, `Infrastructure`, and `Api` pr
 The application was built using:
 
 - ASP.Net Core 3.1
-- Blazor WebAssembly (WASM)
-- Entity Framework Core (Working on a Dapper alternative)
+- Blazor WebAssembly (Client)
+- Entity Framework Core and a working Dapper implementation
 - Bootstrap 4
 
 ### Tools
 
-This application already contains Swagger documentation from the Swashbuckler package for client resource testing. Also, NLog for logging request from the Api and any additional errors that are saved as text documents for review.
+This application contains Swagger documentation from the Swashbuckler package for client resource testing. Also, NLog for logging request from the Api and any additional errors that are saved as text documents for review.
 
 For database setup, it is recommended to use Sqlite for development and is currently an installed package with the application. Navigate to the Infrastructure project and find the `StoreContext.cs` class in the `Data` directory and find the method that configures which database to use
 
