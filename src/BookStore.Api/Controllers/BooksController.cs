@@ -63,7 +63,7 @@ namespace BookStore.Api.Controllers
         }
 
         /// <summary>
-        /// Get a Single Author with a specific Id
+        /// Get a Single Book with a specific Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -169,6 +169,7 @@ namespace BookStore.Api.Controllers
                 {
                     return BadRequest();
                 }
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
