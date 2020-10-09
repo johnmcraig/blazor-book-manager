@@ -9,15 +9,13 @@ namespace BookStore.Api.Controllers
 {
     public class AuthorsController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthorRepository _authorRepo;
         private readonly ILoggerService _logger;
 
-        public AuthorsController(IAuthorRepository authorRepo, IUnitOfWork unitOfWork, ILoggerService logger)
+        public AuthorsController(IAuthorRepository authorRepo, ILoggerService logger)
         {
             _authorRepo = authorRepo;
             _logger = logger;
-            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -35,22 +33,21 @@ namespace BookStore.Api.Controllers
             {
                 if (string.IsNullOrEmpty(search))
                 {
-                    _logger.LogInformation("Attempting to get all authors...");
+                    _logger.LogInformation($"{location}: Attempting to get all Author records...");
 
-                    // var authors = await _unitOfWork.Repository<Author>().FindAll();
                     var authors = await _authorRepo.FindAll();
 
-                    _logger.LogInformation("Successfully got all Authors");
+                    _logger.LogInformation($"{location}: Successfully got all Author records");
 
                     return Ok(authors);
                 }
                 else
                 {
-                    _logger.LogInformation($"Attempting to get authors with search parameter of: { search }");
+                    _logger.LogInformation($"{location}: Attempting to get Authors with search parameter of: { search }");
 
                     var searchAuthor = await _authorRepo.FindBySearch(search);
 
-                    _logger.LogInformation($"Successfully got Authors with search parameter of: { search }");
+                    _logger.LogInformation($"{location}: Successfully returned Authors with search parameter of: { search }");
 
                     return Ok(searchAuthor);
                 }
@@ -79,7 +76,6 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single record with id:{id}");
 
-                // var author = await _unitOfWork.Repository<Author>().FindById(id);
                 var author = await _authorRepo.FindById(id);
 
                 if (author == null)
@@ -130,7 +126,6 @@ namespace BookStore.Api.Controllers
 
                 }
 
-                // var isSuccess = await _unitOfWork.Repository<Author>().Create(author);
                 var isSuccess = await _authorRepo.Create(author);
 
                 if (!isSuccess)
@@ -188,7 +183,6 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                // var isSuccess = await _unitOfWork.Repository<Author>().Update(authorToUpdate);
                 var isSuccess = await _authorRepo.Update(authorToUpdate);
 
                 if (!isSuccess)
@@ -220,7 +214,7 @@ namespace BookStore.Api.Controllers
 
             try
             {
-                _logger.LogInformation($"Author deletion attempted - id: {id}");
+                _logger.LogInformation($"Author deletion attempted with record id: {id}");
 
                 if(id < 1)
                 {
@@ -228,7 +222,6 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                // var author = await _unitOfWork.Repository<Author>().FindById(id);
                 var author = await _authorRepo.FindById(id);
 
                 if (author == null)
@@ -237,7 +230,6 @@ namespace BookStore.Api.Controllers
                     return NotFound();
                 }
 
-                // var isSuccess = await _unitOfWork.Repository<Author>().Delete(author);
                  var isSuccess = await _authorRepo.Delete(author);
 
                 if (!isSuccess)

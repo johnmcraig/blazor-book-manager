@@ -33,7 +33,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Create(Author entity)
         {
-            string sql = @"INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
+            string sql = "INSERT INTO Authors (FirstName, LastName, Bio) VALUES (@FirstName, @LastName, @Bio);";
 
             try
             {
@@ -58,7 +58,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> Delete(Author entity)
         {
-            string sql = @"DELETE FROM Authors WHERE Id = @Id";
+            string sql = "DELETE FROM Authors WHERE Id = @Id";
 
             try
             {
@@ -79,7 +79,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            var query = @"SELECT * FROM Authors; SELECT * FROM Books;";
+            string sql = "SELECT * FROM Authors; SELECT * FROM Books;";
 
             try
             {
@@ -88,7 +88,7 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    using(var multi = await connection.QueryMultipleAsync(query))
+                    using(var multi = await connection.QueryMultipleAsync(sql))
                     {
                         var authors = multi.Read<Author>().ToList();
                         var books = multi.Read<Book>().ToList();
@@ -112,8 +112,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindBySearch(string search)
         {
-            string sql = @"SELECT * FROM Authors WHERE FirstName LIKE @Search UNION " + 
-                            "SELECT * FROM Authors WHERE LastName LIKE @Search";
+            string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search UNION " + 
+                         "SELECT * FROM Authors WHERE LastName LIKE @Search";
 
             try
             {
@@ -135,7 +135,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            var query = "SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books WHERE AuthorId = @Id;";
+            string sql = "SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books WHERE AuthorId = @Id;";
                         
             try
             {
@@ -144,7 +144,7 @@ namespace BookStore.Infrastructure.Data
                 {
                     connection.Open();
 
-                    using (var multi = await connection.QueryMultipleAsync(query,
+                    using (var multi = await connection.QueryMultipleAsync(sql,
                         new
                         {
                             @Id = id
@@ -175,6 +175,7 @@ namespace BookStore.Infrastructure.Data
             try
             {
                 await _sqliteData.SaveData(sql, entity, connectionString);
+
                 return true;
             }
             catch (Exception ex)
@@ -187,22 +188,23 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = @"SELECT CASE WHEN EXISTS (SELECT Id FROM Authors " +
-                         "WHERE Id = @Id)" +
+            string sql = "SELECT CASE WHEN EXISTS (SELECT * FROM Authors WHERE Id = @Id)" +
                          "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
             {
-                using var connection = new SqliteConnection(connectionString);
-
-                connection.Open();
-
-                var isExists = await connection.QueryFirstAsync<bool>(sql, new
+                using (var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
                 {
-                    @Id = id
-                });
 
-                return isExists;
+                    connection.Open();
+
+                    var isExists = await connection.QueryFirstAsync<bool>(sql, new
+                    {
+                        @Id = id
+                    });
+
+                    return isExists;
+                }
             }
             catch (Exception ex)
             {

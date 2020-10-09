@@ -112,8 +112,11 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                var results =
-                    await _sqliteData.LoadData<Book, dynamic>(sql, new {Search = "%" + search + "%"}, connectionString);
+                var results = await _sqliteData.LoadData<Book, dynamic>(sql, 
+                    new 
+                    {
+                        Search = "%" + search + "%"
+                    }, connectionString);
 
                 return results.ToList();
             }
@@ -133,7 +136,8 @@ namespace BookStore.Infrastructure.Data
 
             try
             {
-                using(var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
+                using(var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
                 {
                     connection.Open();
 
@@ -179,19 +183,19 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = "SELECT CASE WHEN EXISTS (SELECT Id FROM Books " +
-                         "WHERE Id = @Id)" +
+            string sql = "SELECT CASE WHEN EXISTS (SELECT Id FROM Books WHERE Id = @Id)" +
                          "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
             {
-                using (var connection = new SqliteConnection(connectionString))
+                using(var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
                 {
                     connection.Open();
 
-                    var isExists = await connection.QueryFirstAsync<bool>(sql, 
-                        new 
-                        { 
+                    var isExists = await connection.QueryFirstAsync<bool>(sql,
+                        new
+                        {
                             @Id = id
                         });
 
