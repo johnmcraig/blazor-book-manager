@@ -11,7 +11,8 @@ namespace BookStore.Infrastructure.Data
     public class StoreContext : DbContext
     {
         private readonly IConfiguration _config;
-        public StoreContext(DbContextOptions<StoreContext> options, IConfiguration config) : base(options)
+        public StoreContext(DbContextOptions<StoreContext> options, IConfiguration config) 
+            : base(options)
         {
             _config = config;
             Database.EnsureCreated();
