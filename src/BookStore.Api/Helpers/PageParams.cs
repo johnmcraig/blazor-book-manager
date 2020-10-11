@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Api.Helpers
 {
-    public class Params
+    public class PageParams
     {
         private const int MaxPageSize = 50;
         public int PageNumer { get; set; } = 1;
