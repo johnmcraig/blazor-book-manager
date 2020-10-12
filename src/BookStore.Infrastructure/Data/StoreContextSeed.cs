@@ -19,15 +19,21 @@ namespace BookStore.Infrastructure.Data
                 {
                     new Author
                     {
-                        FirstName = "Jane",
-                        LastName = "Street",
-                        Bio = "A pretty nice writer."
+                        FirstName = "Andrew",
+                        LastName = "Lock",
+                        Bio = "Author and blogger of ASP.Net Core under Manning, physical and digital."
                     },
                     new Author
                     {
-                        FirstName = "Bill",
-                        LastName = "Hartley",
-                        Bio = "Fun is the name of the game."
+                        FirstName = "Jon",
+                        LastName = "Smith",
+                        Bio = "Technical writer for Entity Framework Core documentation."
+                    },
+                    new Author
+                    {
+                        FirstName = "Adam",
+                        LastName = "Freeman",
+                        Bio = "UK based author of many software development framework books."
                     }
                 };
 
@@ -41,38 +47,38 @@ namespace BookStore.Infrastructure.Data
                     new Book
                     {
                         AuthorId = 1,
-                        Title = "Super Thriller",
-                        Year = 2009,
-                        Summary = "A heart racing thriller story",
-                        Isbn = "TEST-1111-22BN",
-                        Price = 19.99m
-                    },
-                    new Book
-                    {
-                        AuthorId = 1,
-                        Title = "Super Thriller 2",
-                        Year = 2010,
-                        Summary = "A sequel to the best heart racing thriller story",
-                        Isbn = "TEST-2222-23BN",
-                        Price = 29.99m
-                    },
-                    new Book
-                    {
-                        AuthorId = 1,
-                        Title = "Super Thriller 3",
-                        Year = 2011,
-                        Summary = "The third installment of heart racing thriller series",
-                        Isbn = "TEST-3333-32BN",
-                        Price = 39.99m
+                        Title = "ASP.Net Core In Action",
+                        Year = 2018,
+                        Summary = "A particle guide on the ASP.Net Core framework.",
+                        Isbn = "978-1617294617",
+                        Price = 44.99m
                     },
                     new Book
                     {
                         AuthorId = 2,
-                        Title = "A Trip Outside",
-                        Year = 2015,
-                        Summary = "Lighthearted fun in the sun",
-                        Isbn = "TEST-4444-45BN",
-                        Price = 39.99m
+                        Title = "Entity Framework Core IN Action",
+                        Year = 2018,
+                        Summary = "A sequel to the best heart racing thriller story",
+                        Isbn = "978-1617294563",
+                        Price = 39.70m
+                    },
+                    new Book
+                    {
+                        AuthorId = 3,
+                        Title = "Pro ASP.Net Core 3",
+                        Year = 2020,
+                        Summary = "Now in its 8th edition, the comprehensive book you need to learn ASP.NET Core development!",
+                        Isbn = "978-1484254394",
+                        Price = 34.99m
+                    },
+                    new Book
+                    {
+                        AuthorId = 3,
+                        Title = "Pro React 16",
+                        Year = 2019,
+                        Summary = "Use this book to build dynamic JavaScript applications using the popular React library.",
+                        Isbn = "978-1484244500",
+                        Price = 35.97m
                     }
                 };
 
