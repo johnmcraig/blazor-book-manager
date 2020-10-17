@@ -84,8 +84,6 @@ namespace BookStore.Infrastructure.Data
                 using (var connection = new SqliteConnection(_config
                     .GetConnectionString(connectionString)))
                 {
-                    connection.Open();
-
                     var bookResults = await connection
                         .QueryAsync<Book, Author, Book>(sql, 
                             (books, author) =>
@@ -139,17 +137,16 @@ namespace BookStore.Infrastructure.Data
                 using(var connection = new SqliteConnection(_config
                     .GetConnectionString(connectionString)))
                 {
-                    connection.Open();
-
-                    var book = await connection.QueryAsync<Book, Author, Book>(sql, (book, author) => 
-                    {
-                        book.Author = author;
-                        return book;
-                    },
-                    new
-                    {
-                        @Id = id
-                    }, splitOn: "Id");
+                    var book = await connection.QueryAsync<Book, Author, Book>
+                        (sql, (book, author) => 
+                        {
+                            book.Author = author;
+                            return book;
+                        },
+                        new
+                        {
+                            @Id = id
+                        }, splitOn: "Id");
 
                     return book.FirstOrDefault();
                 }
@@ -191,8 +188,6 @@ namespace BookStore.Infrastructure.Data
                 using(var connection = new SqliteConnection(_config
                     .GetConnectionString(connectionString)))
                 {
-                    connection.Open();
-
                     var isExists = await connection.QueryFirstAsync<bool>(sql,
                         new
                         {

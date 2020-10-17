@@ -86,8 +86,6 @@ namespace BookStore.Infrastructure.Data
                 using (var connection = new SqliteConnection(_config
                     .GetConnectionString(connectionString)))
                 {
-                    connection.Open();
-
                     using(var multi = await connection.QueryMultipleAsync(sql))
                     {
                         var authors = multi.Read<Author>().ToList();
@@ -98,13 +96,11 @@ namespace BookStore.Infrastructure.Data
                         }
                         return authors;
                     }
-
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
-
                 return null;
             }
 
@@ -114,7 +110,6 @@ namespace BookStore.Infrastructure.Data
         {
             string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search UNION " + 
                          "SELECT * FROM Authors WHERE LastName LIKE @Search";
-
             try
             {
                 var results = await _sqliteData.LoadData<Author, dynamic>(sql, 
@@ -128,7 +123,6 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
-
                 return null;
             }
         }
@@ -142,8 +136,6 @@ namespace BookStore.Infrastructure.Data
                 using (var connection = new SqliteConnection(_config
                     .GetConnectionString(connectionString)))
                 {
-                    connection.Open();
-
                     using (var multi = await connection.QueryMultipleAsync(sql,
                         new
                         {
@@ -163,7 +155,6 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
-
                 return null;
             }
         }
@@ -195,9 +186,6 @@ namespace BookStore.Infrastructure.Data
             {
                 using (var connection = new SqliteConnection(_config.GetConnectionString(connectionString)))
                 {
-
-                    connection.Open();
-
                     var isExists = await connection.QueryFirstAsync<bool>(sql, new
                     {
                         @Id = id

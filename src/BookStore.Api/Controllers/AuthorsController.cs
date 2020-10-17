@@ -123,7 +123,6 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogWarning($"{location}: Data was incomplete");
                     return BadRequest(ModelState);
-
                 }
 
                 var isSuccess = await _authorRepo.Create(author);
