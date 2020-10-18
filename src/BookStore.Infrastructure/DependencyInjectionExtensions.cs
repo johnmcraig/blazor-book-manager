@@ -18,6 +18,7 @@ namespace BookStore.Infrastructure
             
             services.AddMemoryCache();
             services.AddSingleton<IBookCache, BookCache>();
+            services.AddSingleton<IAuthorCache, AuthorCache>();
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IBookRepository, BookSqlRepository>();
