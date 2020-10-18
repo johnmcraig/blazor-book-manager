@@ -11,11 +11,14 @@ namespace BookStore.Api.Controllers
     {
         private readonly IBookRepository _bookRepo;
         private readonly ILoggerService _logger;
+        private readonly IBookCache _bookCache;
 
-        public BooksController(IBookRepository bookRepo, ILoggerService logger)
+        public BooksController(IBookRepository bookRepo, ILoggerService logger,
+            IBookCache bookCache)
         {
             _bookRepo = bookRepo;
             _logger = logger;
+            _bookCache = bookCache;
         }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace BookStore.Api.Controllers
 
                 _logger.LogInformation($"{location}: Successfully retrieved the record with id: {id}");
 
+                _bookCache.Set(book);
                 return Ok(book);
             }
             catch (Exception ex)
@@ -186,6 +190,7 @@ namespace BookStore.Api.Controllers
                     return InternalError($"{location}: Update operation failed");
                 }
 
+                _bookCache.Remove(id);
                 return NoContent();
             }
             catch (Exception ex)

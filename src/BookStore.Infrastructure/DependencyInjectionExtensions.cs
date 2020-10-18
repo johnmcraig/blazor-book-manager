@@ -3,6 +3,7 @@ using BookStore.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using BookStore.Infrastructure.DataAccess;
 using BookStore.Infrastructure.Identity;
+using BookStore.Infrastructure.Services;
 
 namespace BookStore.Infrastructure
 {
@@ -14,7 +15,9 @@ namespace BookStore.Infrastructure
 
             services.AddDbContext<StoreContext>();
             services.AddDbContext<AppIdentityDbContext>();
-
+            
+            services.AddMemoryCache();
+            services.AddSingleton<IBookCache, BookCache>();
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IBookRepository, BookSqlRepository>();
