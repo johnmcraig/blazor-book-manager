@@ -78,18 +78,24 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single book with id: {id}");
 
-                var book = await _bookRepo.FindById(id);
+                var book = _bookCache.Get(id);
 
                 if (book == null)
                 {
-                    _logger.LogWarning($"{location}: Failed to retrieve record with id: {id}");
+                    book = await _bookRepo.FindById(id);
 
-                    return NotFound();
+                    if (book == null)
+                    {
+                        _logger.LogWarning($"{location}: Failed to retrieve record with id: {id}");
+
+                        return NotFound();
+                    }
+
+                    _bookCache.Set(book);
                 }
 
                 _logger.LogInformation($"{location}: Successfully retrieved the record with id: {id}");
 
-                _bookCache.Set(book);
                 return Ok(book);
             }
             catch (Exception ex)
@@ -191,6 +197,7 @@ namespace BookStore.Api.Controllers
                 }
 
                 _bookCache.Remove(id);
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -235,6 +242,8 @@ namespace BookStore.Api.Controllers
                 {
                     return InternalError($"{location}: Update operation failed");
                 }
+
+                _bookCache.Remove(id);
 
                 return NoContent();
             }
