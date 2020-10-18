@@ -45,7 +45,7 @@ else
                 <ul class="list-group list-group-flush">
                     @foreach (var book in Model.Books)
                     {
-                        <li class="list-group-item">@book.Title - @book.Price </li>
+                        <li class="list-group-item"><a href="books/details/@book.Id"> @book.Title </a></li>
                     }
                 </ul>
             </div>

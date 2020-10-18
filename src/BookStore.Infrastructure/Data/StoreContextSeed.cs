@@ -56,9 +56,9 @@ namespace BookStore.Infrastructure.Data
                     new Book
                     {
                         AuthorId = 2,
-                        Title = "Entity Framework Core IN Action",
+                        Title = "Entity Framework Core In Action",
                         Year = 2018,
-                        Summary = "A sequel to the best heart racing thriller story",
+                        Summary = "This teaches you how to access and update relational data from .NET applications. Following the crystal-clear explanations, real-world examples, and around 100 diagrams, you’ll discover time-saving patterns and best practices for security, performance tuning, and unit testing.",
                         Isbn = "978-1617294563",
                         Price = 39.70m
                     },
