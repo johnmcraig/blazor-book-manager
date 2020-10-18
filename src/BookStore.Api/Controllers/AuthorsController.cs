@@ -11,11 +11,14 @@ namespace BookStore.Api.Controllers
     {
         private readonly IAuthorRepository _authorRepo;
         private readonly ILoggerService _logger;
+        private readonly IAuthorCache _authorCache;
 
-        public AuthorsController(IAuthorRepository authorRepo, ILoggerService logger)
+        public AuthorsController(IAuthorRepository authorRepo, ILoggerService logger,
+            IAuthorCache authorCache)
         {
             _authorRepo = authorRepo;
             _logger = logger;
+            _authorCache = authorCache;
         }
 
         /// <summary>
@@ -76,13 +79,19 @@ namespace BookStore.Api.Controllers
             {
                 _logger.LogInformation($"{location}: Attempting to get a single record with id:{id}");
 
-                var author = await _authorRepo.FindById(id);
+                var author = _authorCache.Get(id);
 
                 if (author == null)
                 {
-                    _logger.LogWarning($"{location}: Record with id:{id} was not found");
+                    author = await _authorRepo.FindById(id);
+                    if (author == null)
+                    {
+                        _logger.LogWarning($"{location}: Record with id:{id} was not found");
 
-                    return NotFound();
+                        return NotFound();
+                    }
+
+                    _authorCache.Set(author);
                 }
 
                 _logger.LogInformation($"{location}: Successfully retrieved the Author with id:{id}");
@@ -122,6 +131,7 @@ namespace BookStore.Api.Controllers
                 if(!ModelState.IsValid)
                 {
                     _logger.LogWarning($"{location}: Data was incomplete");
+
                     return BadRequest(ModelState);
                 }
 
@@ -189,6 +199,8 @@ namespace BookStore.Api.Controllers
                     return InternalError($"{location}: Update operation failed");
                 }
 
+                _authorCache.Remove(id);
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -218,6 +230,7 @@ namespace BookStore.Api.Controllers
                 if(id < 1)
                 {
                     _logger.LogWarning($"{location}: Record deletion failed with invalid data");
+
                     return BadRequest();
                 }
 
@@ -226,6 +239,7 @@ namespace BookStore.Api.Controllers
                 if (author == null)
                 {
                     _logger.LogWarning($"{location}: Record with id: {id} was not found");
+
                     return NotFound();
                 }
 
@@ -235,6 +249,8 @@ namespace BookStore.Api.Controllers
                 {
                     return InternalError($"{location}: Delete operation failed");
                 }
+
+                _authorCache.Remove(id);
 
                 return NoContent();
             }
