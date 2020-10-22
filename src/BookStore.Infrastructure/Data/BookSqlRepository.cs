@@ -86,7 +86,7 @@ namespace BookStore.Infrastructure.Data
                 {
                     var bookResults = await connection
                         .QueryAsync<Book, Author, Book>(sql, 
-                            (books, author) =>
+                        (books, author) =>
                         {
                             books.Author = author;
                             return books;
