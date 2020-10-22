@@ -12,13 +12,15 @@ namespace BookStore.Api.Controllers
         private readonly IBookRepository _bookRepo;
         private readonly ILoggerService _logger;
         private readonly IBookCache _bookCache;
+        private readonly IUnitOfWork _unitOfWork;
 
         public BooksController(IBookRepository bookRepo, ILoggerService logger,
-            IBookCache bookCache)
+            IBookCache bookCache, IUnitOfWork unitOfWork)
         {
             _bookRepo = bookRepo;
             _logger = logger;
             _bookCache = bookCache;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -82,7 +84,7 @@ namespace BookStore.Api.Controllers
 
                 if (book == null)
                 {
-                    book = await _bookRepo.FindById(id);
+                    book = await _unitOfWork.BookRepository.FindById(id);
 
                     if (book == null)
                     {
@@ -135,7 +137,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var isSuccess = await _bookRepo.Create(book);
+                var isSuccess = await _unitOfWork.BookRepository.Create(book);
 
                 if (!isSuccess)
                 {
@@ -175,7 +177,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                var ifExists = await _bookRepo.IsExists(id);
+                var ifExists = await _unitOfWork.BookRepository.IsExists(id);
 
                 if (ifExists == false)
                 {
@@ -189,7 +191,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var isSuccess = await _bookRepo.Update(bookToUpdate);
+                var isSuccess = await _unitOfWork.BookRepository.Update(bookToUpdate);
 
                 if (!isSuccess)
                 {
@@ -227,7 +229,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                var book = await _bookRepo.FindById(id);
+                var book = await _unitOfWork.BookRepository.FindById(id);
 
                 if (book == null)
                 {
@@ -236,11 +238,11 @@ namespace BookStore.Api.Controllers
                     return NotFound();
                 }
 
-                var isSuccess = await _bookRepo.Delete(book);
+                var isSuccess = await _unitOfWork.BookRepository.Delete(book);
 
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Update operation failed");
+                    return InternalError($"{location}: Delete operation failed");
                 }
 
                 _bookCache.Remove(id);
