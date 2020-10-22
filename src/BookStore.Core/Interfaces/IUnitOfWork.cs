@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.Core.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
-        IBaseRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
-        Task<int> Complete();
+        IBookRepository BookRepository { get; }
+        IAuthorRepository AuthorRepository { get; }
     }
 }
