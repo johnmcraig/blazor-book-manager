@@ -8,10 +8,10 @@ using System.Reflection;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class StoreContext : DbContext
+    public class ApiDbContext : DbContext
     {
         private readonly IConfiguration _config;
-        public StoreContext(DbContextOptions<StoreContext> options, IConfiguration config) 
+        public ApiDbContext(DbContextOptions<ApiDbContext> options, IConfiguration config) 
             : base(options)
         {
             _config = config;

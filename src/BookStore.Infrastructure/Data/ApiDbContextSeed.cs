@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Data
 {
-    public class StoreContextSeed
+    public class ApiDbContextSeed
     {
-        public static async Task SeedAsync(StoreContext dbContext, ILoggerFactory logger)
+        public static async Task SeedAsync(ApiDbContext dbContext, ILoggerFactory logger)
         {
             if(!dbContext.Authors.Any())
             {
