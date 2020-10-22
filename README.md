@@ -9,7 +9,7 @@
 
 ## Scope
 
-A full-stack web application to manage books and their authors with clean architecture using C#/.Net Core, Blazor, HTML, and CSS.
+A full-stack web application to manage books and their authors with clean architecture using C#/.Net Core, Blazor, Dapper & SQL, HTML, and CSS.
 
 ### Architecture
 
@@ -23,26 +23,32 @@ The application was built using:
 
 - ASP.Net Core 3.1
 - Blazor WebAssembly (Client)
-- Entity Framework Core and a working Dapper implementation
+- SQL + Dapper for database transactions
 - Bootstrap 4
 
 ### Tools
 
-This application contains Swagger documentation from the Swashbuckler package for client resource testing. Also, NLog for logging request from the Api and any additional errors that are saved as text documents for review.
+Swagger - Api/resource documentation testing from the Swashbuckler package for the client.
 
-For database setup, it is recommended to use Sqlite for development and is currently an installed package with the application. Navigate to the Infrastructure project and find the `StoreContext.cs` class in the `Data` directory and find the method that configures which database to use
+NLog - for logging request from the Api and any additional errors that are saved as text documents for review.
+
+### Database Setup
+
+For database setup, it is recommended to use Sqlite for development and is currently an installed package with the application. Navigate to the Infrastructure project and find the `ApiDbContext.cs` class in the `..\Data` directory and find the method that configures which database to use:
 
 ```csharp
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
-    //optionsBuilder.UseNpgsql(_config.GetConnectionString("NpgsqlConString"));
-    //optionsBuilder.UseSqlServer(_config.GetConnectionString("sqlConString"));
     optionsBuilder.UseSqlite(_config.GetConnectionString("sqlite"));
 }
 ```
 
-PostgreSQL is also already setup for database configuration, just uncomment the line using the `UseNpgsql` and setup the connection string in the `application.Development.json` file in the `Api` project (the main startup). Then comment out other signature lines.
+Change the above `optionsBuilder` method to which ever database package you prefer, such as MySql with: `.UseMySql()`. Configure the connection to that database in the `appsettings.Development.json` file in the Api project, then pass it in the `GetConnectionString` extension.
+
+PostgreSQL is also already setup for database configuration, change the `optoinsBuilder` method to use `.UseNpgsql()` and setup the connection string in the `application.Development.json` file.
 
 ### Future Features
 
 The Book Store does not yet contain login/logout, registration, and authentication, but will be needed once the project grows in scope to actually sell books online.
+
+Paging, filtering, and searching is currently in the pipeline and should be implemented within the year (*maybe*... this is a guesstimate).
