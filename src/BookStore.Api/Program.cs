@@ -25,9 +25,9 @@ namespace BookStore.Api
 
                 try
                 {
-                    var dbContext = services.GetRequiredService<StoreContext>();
+                    var dbContext = services.GetRequiredService<ApiDbContext>();
                     await dbContext.Database.MigrateAsync();
-                    await StoreContextSeed.SeedAsync(dbContext, loggerFactory);
+                    await ApiDbContextSeed.SeedAsync(dbContext, loggerFactory);
 
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
