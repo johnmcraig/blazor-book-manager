@@ -1,0 +1,27 @@
+﻿@if (this.author != null)
+{
+    <tr>
+        <td scope="row">@author.FirstName</td>
+        <td scope="row">@author.LastName</td>
+        <td scope="row">
+            <a href="/authors/details/@author.Id" class="btn btn-primary">
+                <span class="oi oi-book"></span>
+                Details
+            </a>
+            <a href="/authors/update/@author.Id" class="btn btn-warning">
+                <span class="oi oi-pencil"></span>
+                Update
+            </a>
+            <a href="/authors/delete/@author.Id" class="btn btn-danger">
+                <span class="oi oi-delete"></span>
+                Delete
+            </a>
+        </td>
+    </tr>
+}
+
+
+@code {
+    [Parameter]
+    public Author author { get; set; }
+}

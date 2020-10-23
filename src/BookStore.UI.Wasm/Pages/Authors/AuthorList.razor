@@ -1,18 +1,19 @@
 ﻿@page "/authors"
 
 @inject IAuthorRepository _repo
-@inject NavigationManager _navManager
 
 <h3>Authors List</h3>
-
 <br />
 
 <a href="/authors/create/" class="btn btn-primary p-2 m-2">
-    <span class="oi oi-pencil"></span> 
+    <span class="oi oi-pencil"></span>
     Add An Author
 </a>
 
-@if (_model == null)
+<SearchComponent OnSearch="HandleSearch" />
+<br/>
+
+@if (authors == null)
 {
     <LoadingPrompt Message="Loading Author list..." />
 }
@@ -27,36 +28,51 @@ else
             </tr>
         </thead>
         <tbody>
-        @foreach (var author in _model)
-        {
-            <tr>
-                <td scope="row">@author.FirstName</td>
-                <td scope="row">@author.LastName</td>
-                <td scope="row">
-                    <a href="/authors/details/@author.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                        Details
-                    </a>
-                    <a href="/authors/update/@author.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                        Update
-                    </a>
-                    <a href="/authors/delete/@author.Id" class="btn btn-danger">
-                        <span class="oi oi-delete"></span>
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        }
+            @if (authors.Count() > 0 && authors != null)
+            {
+                @foreach (var author in authors)
+                {
+                    <tr>
+                        <td scope="row">@author.FirstName</td>
+                        <td scope="row">@author.LastName</td>
+                        <td scope="row">
+                            <a href="/authors/details/@author.Id" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                                Details
+                            </a>
+                            <a href="/authors/update/@author.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                                Update
+                            </a>
+                            <a href="/authors/delete/@author.Id" class="btn btn-danger">
+                                <span class="oi oi-delete"></span>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">Cannot find authors</td>
+                </tr>
+            }
+
         </tbody>
     </table>
 }
 
 @code {
-    private IList<Author> _model;
+    private IList<Author> authors;
 
     protected override async Task OnInitializedAsync()
     {
-        _model = await _repo.GetAll(Endpoints.AuthorsEndpoint);
+        authors = await _repo.GetAll(Endpoints.AuthorsEndpoint);
+    }
+
+    private async void HandleSearch(string search)
+    {
+        authors = await _repo.GetBySearch(Endpoints.AuthorsEndpoint, search);
     }
 }

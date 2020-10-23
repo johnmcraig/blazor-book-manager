@@ -9,15 +9,13 @@ namespace BookStore.Api.Controllers
 {
     public class BooksController : BaseApiController
     {
-        private readonly IBookRepository _bookRepo;
         private readonly ILoggerService _logger;
         private readonly IBookCache _bookCache;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BooksController(IBookRepository bookRepo, ILoggerService logger,
-            IBookCache bookCache, IUnitOfWork unitOfWork)
+        public BooksController(ILoggerService logger, IBookCache bookCache, 
+            IUnitOfWork unitOfWork)
         {
-            _bookRepo = bookRepo;
             _logger = logger;
             _bookCache = bookCache;
             _unitOfWork = unitOfWork;
@@ -40,7 +38,7 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation($"{location}: Attempting to retrieve a list of Book records...");
 
-                    var books = await _bookRepo.FindAll();
+                    var books = await _unitOfWork.BookRepository.FindAll();
 
                     _logger.LogInformation($"{location}: Successfully returned a list of Book records");
 
@@ -50,7 +48,7 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation($"{location}: Attempting to get Books with search parameter of: { search }");
 
-                    var searchBook = await _bookRepo.FindBySearch(search);
+                    var searchBook = await _unitOfWork.BookRepository.FindBySearch(search);
 
                     _logger.LogInformation($"{location}: Successfully got Books with search parameter of: { search }");
 

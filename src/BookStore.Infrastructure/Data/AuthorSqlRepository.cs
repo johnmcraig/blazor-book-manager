@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
-using BookStore.Infrastructure.DataAccess;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;

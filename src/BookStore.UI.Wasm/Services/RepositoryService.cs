@@ -64,6 +64,21 @@ namespace BookStore.UI.Wasm.Services
             }          
         }
 
+        public async Task<IList<T>> GetBySearch(string url, string search)
+        {
+            try
+            {
+                var response = await _client.GetFromJsonAsync<IList<T>>(url + $"?search={search}");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return null;
+            }
+        }
+
         public async Task<T> GetSingle(string url, int id)
         {
             try

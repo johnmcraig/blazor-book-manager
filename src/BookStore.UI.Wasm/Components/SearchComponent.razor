@@ -1,0 +1,17 @@
+﻿<div>
+    Search:
+    <input type="text" @bind-value="search"/>
+    <button @onclick="HandleSearch">Search</button>
+</div>
+
+@code {   
+    private string search;
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    private void HandleSearch()
+    {
+        OnSearch.InvokeAsync(search);
+    }
+}

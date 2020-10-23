@@ -6,6 +6,6 @@ namespace BookStore.Core.Interfaces
 {
     public interface IAuthorRepository : IBaseRepository<Author>
     {
-        Task<bool> IsExists(int id);       
+               
     }
 }

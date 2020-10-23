@@ -105,18 +105,29 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Book>> FindBySearch(string search)
         {
-            string sql = "SELECT * FROM Books WHERE Title LIKE @Search " +
-                         "UNION SELECT * FROM Books WHERE Summary LIKE @Search";
-
+            string sql = "SELECT books.*, author.* FROM Books AS books " +
+                         "LEFT JOIN Authors AS author ON books.AuthorId = author.Id " +
+                         "WHERE Title LIKE @Search "; 
+            
             try
             {
-                var results = await _sqliteData.LoadData<Book, dynamic>(sql, 
-                    new 
-                    {
-                        Search = "%" + search + "%"
-                    }, connectionString);
+                using (var connection = new SqliteConnection(_config
+                    .GetConnectionString(connectionString)))
+                {
+                    var bookResults = await connection
+                        .QueryAsync<Book, Author, Book>(sql,
+                        (books, author) =>
+                        {
+                            books.Author = author;
+                            return books;
+                        }, 
+                        new
+                        {
+                            Search = "%" + search + "%"
+                        }, splitOn: "AuthorId");
 
-                return results.ToList();
+                    return bookResults.ToList();
+                }
             }
             catch (Exception ex)
             {

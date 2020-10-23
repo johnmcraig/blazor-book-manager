@@ -11,7 +11,10 @@
     Add A Book
 </a>
 
-@if (_model == null)
+<SearchComponent OnSearch="HandleSearch" />
+<br />
+
+@if (books == null)
 {
     <LoadingPrompt Message="Loading Book list" />
 }
@@ -29,7 +32,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in _model)
+            @foreach (var book in books)
             {
                 <tr>
                     <td>@book.Title</td>
@@ -70,10 +73,15 @@ else
 }
 
 @code {
-    private IList<Book> _model;
+    private IList<Book> books;
 
     protected override async Task OnInitializedAsync()
     {
-        _model = await _repo.GetAll(Endpoints.BooksEndpoint);
+        books = await _repo.GetAll(Endpoints.BooksEndpoint);
+    }
+
+    private async void HandleSearch(string search)
+    {
+        books = await _repo.GetBySearch(Endpoints.BooksEndpoint, search);
     }
 }

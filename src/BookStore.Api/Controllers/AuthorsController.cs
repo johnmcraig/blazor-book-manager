@@ -9,15 +9,13 @@ namespace BookStore.Api.Controllers
 {
     public class AuthorsController : BaseApiController
     {
-        private readonly IAuthorRepository _authorRepo;
         private readonly ILoggerService _logger;
         private readonly IAuthorCache _authorCache;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AuthorsController(IAuthorRepository authorRepo, ILoggerService logger,
-            IAuthorCache authorCache, IUnitOfWork unitOfWork)
+        public AuthorsController(ILoggerService logger, IAuthorCache authorCache, 
+            IUnitOfWork unitOfWork)
         {
-            _authorRepo = authorRepo;
             _logger = logger;
             _authorCache = authorCache;
             _unitOfWork = unitOfWork;
@@ -40,7 +38,7 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation($"{location}: Attempting to get all Author records...");
 
-                    var authors = await _authorRepo.FindAll();
+                    var authors = await _unitOfWork.AuthorRepository.FindAll();
 
                     _logger.LogInformation($"{location}: Successfully got all Author records");
 
@@ -50,7 +48,7 @@ namespace BookStore.Api.Controllers
                 {
                     _logger.LogInformation($"{location}: Attempting to get Authors with search parameter of: { search }");
 
-                    var searchAuthor = await _authorRepo.FindBySearch(search);
+                    var searchAuthor = await _unitOfWork.AuthorRepository.FindBySearch(search);
 
                     _logger.LogInformation($"{location}: Successfully returned Authors with search parameter of: { search }");
 
@@ -181,7 +179,7 @@ namespace BookStore.Api.Controllers
                     return BadRequest();
                 }
 
-                var ifExists = await _authorRepo.IsExists(id);
+                var ifExists = await _unitOfWork.AuthorRepository.IsExists(id);
 
                 if (ifExists == false)
                 {
