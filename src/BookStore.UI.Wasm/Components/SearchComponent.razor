@@ -1,17 +1,26 @@
-﻿<div>
-    Search:
-    <input type="text" @bind-value="search"/>
-    <button @onclick="HandleSearch">Search</button>
+﻿<div class="">
+        <div class="">
+            Search: 
+            <input class="" type="search"
+                   aria-label="Search"
+                   @bind-value="SearchTerm"
+                   placeholder="Enter search term..."
+                   @bind-value:event="oninput" />
+            <button class=""
+                    type="submit" @onclick="HandleSearch">
+                Search
+            </button>
+        </div>
 </div>
 
-@code {   
-    private string search;
+@code {
+    protected string SearchTerm { get; set; }
 
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }
 
-    private void HandleSearch()
+    protected async Task HandleSearch()
     {
-        OnSearch.InvokeAsync(search);
+        await OnSearch.InvokeAsync(SearchTerm);
     }
 }

@@ -4,7 +4,7 @@
 
 <h3>Book List</h3>
 
-<br />
+<hr />
 
 <a href="/books/create/" class="btn btn-primary p-2 m-2">
     <span class="oi oi-pencil"></span>
@@ -32,40 +32,17 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in books)
+            @if (books.Count > 0 && books != null)
+            {
+                @foreach (var book in books)
+                {
+                    <BookListBaseComponent book="book" />
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@book.Title</td>
-                    <td>@book.Year</td>
-                    <td>@($"{book.Price:C}")</td>
-                    <td>@book.Isbn</td>
-                    <td>
-                        @if (book.Author == null)
-                        {
-                            <span class="text-muted">No Author Recorded</span>
-                        }
-                        else
-                        {
-                            <span>
-                                @book.Author.FirstName
-                                @book.Author.LastName
-                            </span>
-                        }
-                    </td>
-                    <td>
-                        <a href="/books/details/@book.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                            Details
-                        </a>
-                        <a href="/books/update/@book.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                            Update
-                        </a>
-                        <a href="/books/delete/@book.Id" class="btn btn-danger">
-                            <span class="oi oi-delete"></span>
-                            Delete
-                        </a>
-                    </td>
+                    <td colspan="3">Cannot find any books</td>
                 </tr>
             }
         </tbody>
@@ -77,10 +54,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         books = await _repo.GetAll(Endpoints.BooksEndpoint);
     }
 
-    private async void HandleSearch(string search)
+    private async Task HandleSearch(string search)
     {
         books = await _repo.GetBySearch(Endpoints.BooksEndpoint, search);
     }

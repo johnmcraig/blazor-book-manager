@@ -1,0 +1,41 @@
+﻿@if (this.book != null)
+{
+    <tr>
+        <td>@book.Title</td>
+        <td>@book.Year</td>
+        <td>@($"{book.Price:C}")</td>
+        <td>@book.Isbn</td>
+        <td>
+            @if (book.Author == null)
+            {
+                <span class="text-muted">No Author Recorded</span>
+            }
+            else
+            {
+                <span>
+                    @book.Author.FirstName
+                    @book.Author.LastName
+                </span>
+            }
+        </td>
+        <td>
+            <a href="/books/details/@book.Id" class="btn btn-primary">
+                <span class="oi oi-book"></span>
+                Details
+            </a>
+            <a href="/books/update/@book.Id" class="btn btn-warning">
+                <span class="oi oi-pencil"></span>
+                Update
+            </a>
+            <a href="/books/delete/@book.Id" class="btn btn-danger">
+                <span class="oi oi-delete"></span>
+                Delete
+            </a>
+        </td>
+    </tr>
+}
+
+@code {
+    [Parameter]
+    public Book book { get; set; }
+}

@@ -32,30 +32,13 @@ else
             {
                 @foreach (var author in authors)
                 {
-                    <tr>
-                        <td scope="row">@author.FirstName</td>
-                        <td scope="row">@author.LastName</td>
-                        <td scope="row">
-                            <a href="/authors/details/@author.Id" class="btn btn-primary">
-                                <span class="oi oi-book"></span>
-                                Details
-                            </a>
-                            <a href="/authors/update/@author.Id" class="btn btn-warning">
-                                <span class="oi oi-pencil"></span>
-                                Update
-                            </a>
-                            <a href="/authors/delete/@author.Id" class="btn btn-danger">
-                                <span class="oi oi-delete"></span>
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
+                    <AuthorListBaseComponent author="author" />
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="3">Cannot find authors</td>
+                    <td colspan="3">Cannot find any authors</td>
                 </tr>
             }
 
@@ -68,10 +51,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         authors = await _repo.GetAll(Endpoints.AuthorsEndpoint);
     }
 
-    private async void HandleSearch(string search)
+    private async Task HandleSearch(string search)
     {
         authors = await _repo.GetBySearch(Endpoints.AuthorsEndpoint, search);
     }
