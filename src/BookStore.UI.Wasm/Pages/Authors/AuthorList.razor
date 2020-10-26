@@ -3,7 +3,8 @@
 @inject IAuthorRepository _repo
 
 <h3>Authors List</h3>
-<br />
+
+<hr />
 
 <a href="/authors/create/" class="btn btn-primary p-2 m-2">
     <span class="oi oi-pencil"></span>
@@ -11,6 +12,7 @@
 </a>
 
 <SearchComponent OnSearch="HandleSearch" />
+
 <br/>
 
 @if (authors == null)
