@@ -71,7 +71,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         Model = await _repo.GetSingle(Endpoints.BooksEndpoint, Id);
-        _toastService.ShowSuccess($"Now Viewing {Model.Title}");
+        _toastService.ShowSuccess($"Now Viewing: {Model.Title}");
     }
 
     private void BackToList()
