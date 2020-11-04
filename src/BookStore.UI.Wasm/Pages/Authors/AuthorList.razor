@@ -55,6 +55,7 @@ else
     {
         await base.OnInitializedAsync();
         authors = await _repo.GetAll(Endpoints.AuthorsEndpoint);
+        StateHasChanged();
     }
 
     private async Task HandleSearch(string search)

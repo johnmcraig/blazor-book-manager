@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +8,9 @@ namespace BookStore.UI.Wasm.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string DisplayName { get; set; }
+        [Required]
+        public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
     }
 }

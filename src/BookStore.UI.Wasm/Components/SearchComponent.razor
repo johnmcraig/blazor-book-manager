@@ -22,5 +22,6 @@
     protected async Task HandleSearch()
     {
         await OnSearch.InvokeAsync(SearchTerm);
+        StateHasChanged();
     }
 }
