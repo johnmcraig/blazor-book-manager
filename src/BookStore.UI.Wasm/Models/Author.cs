@@ -16,8 +16,6 @@ namespace BookStore.UI.Wasm.Models
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
-
         [Required]
         [DisplayName("Biography")]
         [StringLength(250)]
