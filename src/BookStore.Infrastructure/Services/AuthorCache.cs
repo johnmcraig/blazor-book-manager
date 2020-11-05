@@ -1,9 +1,6 @@
 ﻿using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BookStore.Infrastructure.Services
 {
