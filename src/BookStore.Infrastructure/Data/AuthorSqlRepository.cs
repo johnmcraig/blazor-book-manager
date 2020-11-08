@@ -86,10 +86,12 @@ namespace BookStore.Infrastructure.Data
                     {
                         var authors = multi.Read<Author>().ToList();
                         var books = multi.Read<Book>().ToList();
+
                         foreach (var author in authors)
                         {
                             author.Books = books;
                         }
+
                         return authors;
                     }
                 }
@@ -97,6 +99,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return null;
             }
 
@@ -119,6 +122,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return null;
             }
         }
@@ -140,10 +144,12 @@ namespace BookStore.Infrastructure.Data
                     {
                         var author = multi.Read<Author>().FirstOrDefault();
                         var books = multi.Read<Book>().ToList();
+
                         if (author != null)
                         {
                             author.Books = books;
                         }
+
                         return author;
                     }
                 }
@@ -151,6 +157,7 @@ namespace BookStore.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} - {ex.InnerException}");
+
                 return null;
             }
         }

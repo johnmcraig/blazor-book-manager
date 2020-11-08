@@ -30,22 +30,28 @@ namespace BookStore.UI.Wasm.Services
 
             var response = await _client.PostAsJsonAsync<T>(url, entity);
             
-            if (response.StatusCode == System.Net.HttpStatusCode.Created) 
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            {
                 return entity;
-
+            }
+            
             return null;  
         }
 
         public async Task<bool> Delete(string url, int id)
         {
-            if (id < 1) 
+            if (id < 1)
+            {
                 return false;
-
+            }
+            
             var response = await _client.DeleteAsync(url + id);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
                 return true;
-
+            }
+            
             return false;
         }
 
@@ -60,6 +66,7 @@ namespace BookStore.UI.Wasm.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+
                 return null;
             }          
         }
@@ -75,6 +82,7 @@ namespace BookStore.UI.Wasm.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+
                 return null;
             }
         }
@@ -90,6 +98,7 @@ namespace BookStore.UI.Wasm.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+
                 return null;
             } 
         }
@@ -97,12 +106,16 @@ namespace BookStore.UI.Wasm.Services
         public async Task<bool> Update(string url, T entity, int id)
         {
             if (entity == null) 
+            {
                 return false;
+            }
 
             var response = await _client.PutAsJsonAsync(url + id, entity);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent) 
+            {
                 return true;
+            }
 
             return false;
         }
