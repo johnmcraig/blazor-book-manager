@@ -46,7 +46,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }
@@ -67,7 +67,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }
@@ -98,7 +98,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -121,7 +121,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -157,7 +157,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -200,7 +200,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }
