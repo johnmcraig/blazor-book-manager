@@ -183,7 +183,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = "SELECT CASE WHEN EXISTS (SELECT * FROM Authors WHERE Id = @Id)" +
+            string sql = "SELECT CASE WHEN EXISTS (SELECT Id FROM Authors WHERE Id = @Id)" +
                          "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
