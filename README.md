@@ -26,11 +26,13 @@ The application was built using:
 - SQL + Dapper for database transactions
 - Bootstrap 4
 
-### Tools
+### Additional Built-in Tools
 
-Swagger - Api/resource documentation testing from the Swashbuckler package for the client.
+The API project contains the following:
 
-NLog - for logging request from the Api and any additional errors that are saved as text documents for review.
+- Swagger - Api/resource documentation testing from the Swashbuckler package for the client.
+
+- NLog - for logging request from the Api and any additional errors that are saved as text documents for review.
 
 ### Database Setup
 
@@ -45,10 +47,10 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
 Change the above `optionsBuilder` method to which ever database package you prefer, such as MySql with: `.UseMySql()`. Configure the connection to that database in the `appsettings.Development.json` file in the Api project, then pass it in the `GetConnectionString` extension.
 
-PostgreSQL is also already setup for database configuration, change the `optoinsBuilder` method to use `.UseNpgsql()` and setup the connection string in the `application.Development.json` file.
+PostgreSQL is also already setup for database configuration, change the `optionsBuilder` method to use `.UseNpgsql()` and setup the connection string in the `application.Development.json` file.
 
 ### Future Features
 
 The Book Store does not yet contain login/logout, registration, and authentication, but will be needed once the project grows in scope to actually sell books online.
 
-Paging, filtering, and searching is currently in the pipeline and should be implemented within the year (*maybe*... this is a guesstimate).
+Paging and filtering is currently in the pipeline and should be implemented within the year (*maybe*... this is a guesstimate).
