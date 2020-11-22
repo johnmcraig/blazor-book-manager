@@ -1,4 +1,6 @@
-# Blazor Book Manager
+<h1 align="center"> 
+Blazor Book Manager
+</h1>
 
 > A way to manage books as a web application using Blazor WASM
 
