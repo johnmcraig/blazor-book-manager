@@ -61,4 +61,4 @@ PostgreSQL is also already setup for database configuration, change the `options
 
 The Book Store does not yet contain login/logout, registration, and authentication, but will be needed once the project grows in scope to actually sell books online.
 
-Paging and filtering is currently in the pipeline and should be implemented within the year (*maybe*... this is a guesstimate).
+Paging is currently in the pipeline and should be implemented within the year (*maybe*...).
