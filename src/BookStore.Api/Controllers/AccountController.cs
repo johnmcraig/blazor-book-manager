@@ -10,13 +10,13 @@ namespace BookStore.Api.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInMager;
+        private readonly SignInManager<AppUser> _signInManager;
 
         public AccountController(UserManager<AppUser> userManager, 
-            SignInManager<AppUser> signInMager)
+            SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
-            _signInMager = signInMager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("Login")]
@@ -26,7 +26,7 @@ namespace BookStore.Api.Controllers
 
             if (user == null) return Unauthorized(new ApiResponseType());
 
-            var result = await _signInMager.CheckPasswordSignInAsync(user, loginDto.Password,
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password,
                 false);
 
             if (!result.Succeeded) return Unauthorized(new ApiResponseType());
