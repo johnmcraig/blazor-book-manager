@@ -32,10 +32,9 @@ else
         <tbody>
             @if (authors.Count() > 0 && authors != null)
             {
-                @foreach (var author in authors)
-                {
-                    <AuthorListBaseComponent author="author" />
-                }
+            <Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize Items="authors" Context="author">
+                <AuthorListBaseComponent author="author" />
+            </Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize>
             }
             else
             {

@@ -18,12 +18,14 @@ namespace BookStore.UI.Wasm
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredToast();
-            builder.Services.AddTransient(typeof(IRepositoryService<>), typeof(RepositoryService<>));
-            builder.Services.AddTransient<IAuthorRepository, AuthorService>();
-            builder.Services.AddTransient<IBookRepository, BookService>();
+            builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
+            builder.Services.AddScoped<IAuthorRepository, AuthorService>();
+            builder.Services.AddScoped<IBookRepository, BookService>();
             builder.Services.AddOptions();
+
             await builder.Build().RunAsync();
         }
     }

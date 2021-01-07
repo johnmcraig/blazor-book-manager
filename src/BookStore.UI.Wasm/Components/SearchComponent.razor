@@ -1,16 +1,21 @@
 ﻿<div class="">
-        <div class="">
-            Search: 
-            <input class="" type="search"
-                   aria-label="Search"
-                   @bind-value="SearchTerm"
-                   placeholder="Enter search term..."
-                   @bind-value:event="oninput" />
-            <button class=""
-                    type="submit" @onclick="HandleSearch">
+    <div class="input-group" style="position:relative;width:50%;min-width:50px;">
+        <input class="form-control"
+               type="search"
+               aria-label="Search"
+               @bind-value="SearchTerm"
+               placeholder="Search..."
+               @bind-value:event="oninput" />
+
+        <div class="input-group-append">
+            <button class="btn btn-success"
+                    type="submit"
+                    @onclick="HandleSearch">
+                <i class="oi oi-magnifying-glass"></i>
                 Search
             </button>
         </div>
+    </div>
 </div>
 
 @code {

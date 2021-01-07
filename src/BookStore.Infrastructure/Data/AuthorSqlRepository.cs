@@ -46,7 +46,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }
@@ -67,7 +67,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }
@@ -75,7 +75,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindAll()
         {
-            string sql = "SELECT * FROM Authors; SELECT * FROM Books;";
+            string sql = "SELECT Id, FirstName, LastName, Bio FROM Authors; SELECT Id, Title FROM Books;";
 
             try
             {
@@ -98,7 +98,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -107,8 +107,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<IList<Author>> FindBySearch(string search)
         {
-            string sql = "SELECT * FROM Authors WHERE FirstName LIKE @Search UNION " + 
-                         "SELECT * FROM Authors WHERE LastName LIKE @Search";
+            string sql = "SELECT Id, FirstName, LastName FROM Authors WHERE FirstName LIKE @Search UNION " + 
+                         "SELECT Id, FirstName, LastName FROM Authors WHERE LastName LIKE @Search";
             try
             {
                 var results = await _sqliteData.LoadData<Author, dynamic>(sql, 
@@ -121,7 +121,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -129,7 +129,8 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<Author> FindById(int id)
         {
-            string sql = "SELECT * FROM Authors WHERE Id = @Id; SELECT * FROM Books WHERE AuthorId = @Id;";
+            string sql = "SELECT Id, FirstName, LastName, Bio FROM Authors WHERE Id = @Id;" +
+                         " SELECT Id, Title, Summary, Price FROM Books WHERE AuthorId = @Id;";
                         
             try
             {
@@ -142,7 +143,7 @@ namespace BookStore.Infrastructure.Data
                             @Id = id
                         }))
                     {
-                        var author = multi.Read<Author>().FirstOrDefault();
+                        var author = multi.Read<Author>().SingleOrDefault();
                         var books = multi.Read<Book>().ToList();
 
                         if (author != null)
@@ -156,7 +157,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return null;
             }
@@ -182,7 +183,7 @@ namespace BookStore.Infrastructure.Data
 
         public async Task<bool> IsExists(int id)
         {
-            string sql = "SELECT CASE WHEN EXISTS (SELECT * FROM Authors WHERE Id = @Id)" +
+            string sql = "SELECT CASE WHEN EXISTS (SELECT Id FROM Authors WHERE Id = @Id)" +
                          "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS Result";
 
             try
@@ -199,7 +200,7 @@ namespace BookStore.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message} - {ex.InnerException}");
+                _logger.LogError($"{ex.Message}");
 
                 return false;
             }

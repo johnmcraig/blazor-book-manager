@@ -14,7 +14,7 @@ namespace BookStore.UI.Wasm.Models
         [Required]
         [MaxLength(14)]
         public string Isbn { get; set; }
-        public string Image { get; set; }
+        public string Image { get; set; } = "https://via/placeholder.com/300x300";
         public decimal? Price { get; set; }
 
         public int AuthorId { get; set; }

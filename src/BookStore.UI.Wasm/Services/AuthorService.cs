@@ -12,7 +12,9 @@ namespace BookStore.UI.Wasm.Services
         private readonly ILogger<AuthorService> _logger;
         private readonly ILocalStorageService _localStorage;
 
-        public AuthorService(HttpClient client, ILogger<AuthorService> logger, ILocalStorageService localStorage) : base(client, logger, localStorage)
+        public AuthorService(HttpClient client, ILogger<AuthorService> logger, 
+        ILocalStorageService localStorage) 
+            : base(client, logger, localStorage)
         {
             _logger = logger;
             _client = client;
