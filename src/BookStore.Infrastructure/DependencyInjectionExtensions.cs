@@ -13,7 +13,7 @@ namespace BookStore.Infrastructure
         {
             services.AddScoped<ISqlDataAccess, SqliteDataAccess>();
 
-            services.AddDbContext<ApiDbContext>();
+            services.AddDbContext<ApplicationDbContext>();
             services.AddDbContext<AppIdentityDbContext>();
             
             services.AddMemoryCache();
